@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
 import logging
+import datetime
 
-
-TOKEN = "OTU5NzMzOTY1NzU1OTMyNzEy.YkgL6A.8la9mds1oitgXn6YM-Bc3qV2oUw"
+TOKEN = "OTU5NzMzOTY1NzU1OTMyNzEy.YkgL6A.evFKjMABLGInyeSwCFBHGmDLy4U"
 
 
 logger = logging.getLogger('discord')
@@ -15,6 +15,8 @@ logger.addHandler(handler)
 intents = discord.Intents.default()
 intents.members = True
 
+client = discord.Client()
+client = commands.Bot(command_prefix='!')
 
 class RandomThings(commands.Cog):
     def __init__(self, b):
@@ -29,6 +31,14 @@ class RandomThings(commands.Cog):
 
     async def on_connect(self):
         print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+
+    @client.command()  # The decorator must be put here
+    async def hello(self, ctx):
+        await ctx.send("Hi")
+
+    @client.command()
+    async def time(self, ctx):
+        await ctx.send(datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M%p"))
 
 
 bot = commands.Bot(command_prefix='!', intents=intents)
