@@ -2,8 +2,7 @@ import discord
 from discord.ext import commands
 import logging
 import datetime
-
-TOKEN = "OTU5NzMzOTY1NzU1OTMyNzEy.YkgL6A.evFKjMABLGInyeSwCFBHGmDLy4U"
+from token import TOKEN
 
 
 logger = logging.getLogger('discord')
@@ -15,7 +14,7 @@ logger.addHandler(handler)
 intents = discord.Intents.default()
 intents.members = True
 
-client = discord.Client()
+
 client = commands.Bot(command_prefix='!')
 bot = commands.Bot(command_prefix='!', intents=intents)
 
@@ -31,8 +30,7 @@ class RandomThings(commands.Cog):
             f'Привет, {member.name}!'
         )
 
-    async def on_connect(self):
-        print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+
 
     @client.command()
     async def time(self, ctx):
