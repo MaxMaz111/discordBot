@@ -2,8 +2,7 @@ import discord
 from discord.ext import commands
 import logging
 
-
-TOKEN = "OTU5NzMzOTY1NzU1OTMyNzEy.YkgL6A.8la9mds1oitgXn6YM-Bc3qV2oUw"
+from token import TOKEN
 
 
 logger = logging.getLogger('discord')
