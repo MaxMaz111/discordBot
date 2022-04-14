@@ -1,10 +1,10 @@
 import discord
 from discord.ext import commands
 import logging
-
+from data import db_session
 import datetime
 
-from token import TOKEN
+from t import TOKEN
 
 
 logger = logging.getLogger('discord')
@@ -18,12 +18,14 @@ intents.members = True
 
 
 client = commands.Bot(command_prefix='!')
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 
 
 class RandomThings(commands.Cog):
     def __init__(self, b):
         self.bot = b
+        # db_session.global_init("db/blogs.db")
+        self.members = []
 
     @staticmethod
     async def on_member_join(self, member):
@@ -32,7 +34,11 @@ class RandomThings(commands.Cog):
             f'Привет, {member.name}!'
         )
 
-
+    @client.command()
+    async def members(self, ctx):
+        for guild in bot.guilds:
+            for member in guild.members:
+                await ctx.send(member)
 
     @client.command()
     async def time(self, ctx):
@@ -48,9 +54,26 @@ class RandomThings(commands.Cog):
 
     @client.command()
     async def give(self, ctx, id, n):
-        embed = discord.Embed(colour=0x78ccf0, description=f'Вы передали {n} :coin: пользователю <@{id}>')
-        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=embed)
+        if id.isnumeric():
+            if int(id) != ctx.message.author.id:
+                embed = discord.Embed(colour=0x78ccf0, description=f'Вы передали {n} :coin: пользователю <@{id}>')
+                embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+                await ctx.send(f'{id}, {ctx.message.author.id}', embed=embed)
+            else:
+                embed = discord.Embed(colour=0x78ccf0, description=f'Нельзя передать монетки самому себе')
+                embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+
+        else:
+            id = ctx.message.mentions[0].id
+            if ctx.author.id != id:
+                embed = discord.Embed(colour=0x78ccf0, description=f'Вы передали {n} :coin: пользователю <@{id}>!')
+                embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
+            else:
+                embed = discord.Embed(colour=0x78ccf0, description=f'Нельзя передать монетки самому себе')
+                embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=embed)
 
 
 bot.add_cog(RandomThings(bot))
