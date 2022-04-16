@@ -10,26 +10,30 @@ from t import guild_id
 class RandomThings(commands.Cog):
     def __init__(self, b):
         self.bot = b
-        self.guild = self.bot.get_guild(guild_id)
+        self.guild = None
         # # # db_session.global_init("db/blogs.db")
-        #self.members = guild.members
+        self.members = None
+
+    def get_guild(self):
+        if self.guild is None:
+            self.guild = self.bot.get_guild(int(guild_id))
+        return self.guild
+
+    def get_members(self):
+        if self.members is None:
+            self.members = list(map(lambda x: x.id, filter(lambda x: not x.bot, self.get_guild().members)))
+        return self.members
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
         await member.create_dm()
         await member.dm_channel.send(
             f'Привет, {member.name}!'
-
         )
 
     @commands.command()
     async def members(self, ctx):
-        self.guild = self.bot.get_guild(guild_id)
-        self.members = list(map(lambda x: x.id, filter(lambda x: x.bot == False, self.guild.members)))
-        print(self.members)
-
-        for member in self.guild.members:
-            await ctx.send(member)
+        await ctx.send('\n'.join(map(str, self.get_members())))
 
     @commands.command()
     async def time(self, ctx):
@@ -55,9 +59,7 @@ class RandomThings(commands.Cog):
     @commands.command()
     async def give(self, ctx, id, n):
         # если n не int то округлять вниз
-        guild = self.bot.get_guild(guild_id)
-        members = list(map(lambda x: x.id, filter(lambda x: x.bot == False, guild.members)))
-        print(members)
+        members = self.get_members()
         if id in members:
             if id.isnumeric():
                 if int(id) != ctx.message.author.id:
@@ -68,7 +70,6 @@ class RandomThings(commands.Cog):
                     embed = discord.Embed(colour=0x78ccf0, description=f'Нельзя передать монетки самому себе')
                     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
                     await ctx.send(embed=embed)
-
             else:
                 id = ctx.message.mentions[0].id
                 if ctx.author.id != id:
@@ -81,6 +82,3 @@ class RandomThings(commands.Cog):
                     await ctx.send(embed=embed)
         else:
             await ctx.send('человек не на сервере')
-
-
-
