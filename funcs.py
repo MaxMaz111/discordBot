@@ -1,28 +1,14 @@
 import discord
 from discord.ext import commands
-
 # from data import db_session
 import datetime
-
-from t import guild_id
+from dataClass import DataClass
 
 
 class RandomThings(commands.Cog):
-    def __init__(self, b):
-        self.bot = b
-        self.guild = None
-        # # # db_session.global_init("db/blogs.db")
-        self.members = None
-
-    def get_guild(self):
-        if self.guild is None:
-            self.guild = self.bot.get_guild(int(guild_id))
-        return self.guild
-
-    def get_members(self):
-        if self.members is None:
-            self.members = list(map(lambda x: x.id, filter(lambda x: not x.bot, self.get_guild().members)))
-        return self.members
+    def __init__(self):
+        # db_session.global_init("db/blogs.db")
+        self.data = DataClass()
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -33,7 +19,7 @@ class RandomThings(commands.Cog):
 
     @commands.command()
     async def members(self, ctx):
-        await ctx.send('\n'.join(map(str, self.get_members())))
+        await ctx.send('\n'.join(map(str, self.data.get_members())))
 
     @commands.command()
     async def time(self, ctx):
@@ -58,7 +44,7 @@ class RandomThings(commands.Cog):
 
     @commands.command()
     async def give(self, ctx, id, n: int):
-        members = self.get_members()
+        members = self.data.get_members()
         if ctx.message.mentions:
             id = ctx.message.mentions[0].id
         id = int(id)
