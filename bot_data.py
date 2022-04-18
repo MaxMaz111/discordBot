@@ -1,12 +1,8 @@
-from discord.ext import commands
-import discord
+class BotData:
+    def __init__(self, bot, guild_id):
+        self.bot = bot
+        self.guild_id = guild_id
 
-
-class DataClass:
-    bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
-    guild_id = 481470012192980993
-
-    def __init__(self):
         self.guild = None
         self.members = None
 
