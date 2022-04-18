@@ -1,14 +1,13 @@
 import discord
 from discord.ext import commands
-# from data import db_session
 import datetime
-from dataClass import DataClass
+from bot_data import BotData
 
 
 class RandomThings(commands.Cog):
-    def __init__(self):
+    def __init__(self, data: BotData):
         # db_session.global_init("db/blogs.db")
-        self.data = DataClass()
+        self.data = data
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -70,4 +69,3 @@ class RandomThings(commands.Cog):
                                   description='Укажите человека, его id или линк, а затем количество монеток,'
                                               ' которое вы хотите передать')
             await ctx.send(embed=embed)
-

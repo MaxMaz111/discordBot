@@ -1,12 +1,11 @@
+import logging
+
 import discord
 from discord.ext import commands
-import logging
-from data import db_session
-import datetime
-import os
-from t import TOKEN
+from local_config import TOKEN
+
+from bot_data import BotData
 from funcs import RandomThings
-from dataClass import DataClass
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
@@ -16,12 +15,16 @@ logger.addHandler(handler)
 
 intents = discord.Intents.default()
 intents.members = True
-bot = DataClass.bot
+
+bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
+guild_id = 481470012192980993
+
+bot_data = BotData(bot=bot, guild_id=guild_id)
 
 
 @bot.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
-bot.add_cog(RandomThings())
+bot.add_cog(RandomThings(data=bot_data))
 bot.run(TOKEN)
