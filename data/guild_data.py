@@ -1,4 +1,4 @@
-class BotData:
+class GuildData:
     def __init__(self, bot, guild_id):
         self.bot = bot
         self.guild_id = guild_id
@@ -13,5 +13,7 @@ class BotData:
 
     def get_members(self):
         if self.members is None:
-            self.members = list(map(lambda x: x.id, filter(lambda x: not x.bot, self.get_guild().members)))
+            self.members = set(
+                map(lambda x: x.id, filter(lambda x: not x.bot, self.get_guild().members))
+            )
         return self.members

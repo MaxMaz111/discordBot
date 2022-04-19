@@ -7,8 +7,9 @@ from dotenv import load_dotenv
 
 from all_functions.DailyReward import DailyReward
 from all_functions.TimeCommands import TimeCommands
-from bot_data import BotData
+from data.bot_data import BotData
 from data import db_session
+from data.guild_data import GuildData
 from funcs import RandomThings
 
 logger = logging.getLogger('discord')
@@ -23,7 +24,11 @@ intents.members = True
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 guild_id = 481470012192980993
 
-bot_data = BotData(bot=bot, guild_id=guild_id)
+guilds = [
+    GuildData(bot=bot, guild_id=guild_id)
+]
+
+bot_data = BotData(guilds=guilds)
 load_dotenv()
 
 @bot.event
