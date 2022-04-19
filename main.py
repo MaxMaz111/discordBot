@@ -29,7 +29,8 @@ guilds = [
     GuildData(bot=bot, guild_id=guild_id)
 ]
 
-db = DbData()
+db_name = 'db/accounts.db'
+db = DbData(db_name=db_name)
 
 bot_data = BotData(guilds=guilds, db=db)
 load_dotenv()
@@ -40,7 +41,6 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
 
-db_session.global_init('db/accounts.db')
 bot.add_cog(RandomThings(data=bot_data))
 bot.add_cog(DailyReward())
 bot.add_cog(TimeCommands())
