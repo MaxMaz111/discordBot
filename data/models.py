@@ -1,7 +1,7 @@
-import datetime
 import sqlalchemy
+from sqlalchemy import orm, UniqueConstraint
+
 from data.db_session import SqlAlchemyBase
-from sqlalchemy import orm
 
 
 class Statistics(SqlAlchemyBase):
@@ -14,6 +14,9 @@ class Statistics(SqlAlchemyBase):
 
 
 class Users(SqlAlchemyBase):
+    __table_args__ = (
+        UniqueConstraint('discord_id', 'guild_id'),
+    )
     __tablename__ = 'users'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     discord_id = sqlalchemy.Column(sqlalchemy.Integer, unique=True)
