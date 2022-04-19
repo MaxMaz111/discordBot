@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from all_functions.DailyReward import DailyReward
 from all_functions.TimeCommands import TimeCommands
+from all_functions.BalanceCommands import BalanceCommands
 from data.bot_data import BotData
 from data import db_session
 from data.db_data import DbData
@@ -44,4 +45,5 @@ async def on_ready():
 bot.add_cog(RandomThings(data=bot_data))
 bot.add_cog(DailyReward())
 bot.add_cog(TimeCommands())
+bot.add_cog(BalanceCommands(data=bot_data))
 bot.run(os.getenv('TOKEN'))
