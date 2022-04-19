@@ -2,11 +2,11 @@ import logging
 
 import discord
 from discord.ext import commands
-from local_config import TOKEN
+from t import TOKEN
 
 from bot_data import BotData
 from funcs import RandomThings
-
+from DailyReward import DailyReward
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
 handler = logging.StreamHandler()
@@ -27,4 +27,5 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
 bot.add_cog(RandomThings(data=bot_data))
+bot.add_cog(DailyReward())
 bot.run(TOKEN)
