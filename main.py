@@ -9,6 +9,7 @@ from all_functions.DailyReward import DailyReward
 from all_functions.TimeCommands import TimeCommands
 from data.bot_data import BotData
 from data import db_session
+from data.db_data import DbData
 from data.guild_data import GuildData
 from funcs import RandomThings
 
@@ -28,14 +29,18 @@ guilds = [
     GuildData(bot=bot, guild_id=guild_id)
 ]
 
-bot_data = BotData(guilds=guilds)
+db_name = 'db/accounts.db'
+db = DbData(db_name=db_name)
+
+bot_data = BotData(guilds=guilds, db=db)
 load_dotenv()
+
 
 @bot.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
-db_session.global_init('db/accounts.db')
+
 bot.add_cog(RandomThings(data=bot_data))
 bot.add_cog(DailyReward())
 bot.add_cog(TimeCommands())
