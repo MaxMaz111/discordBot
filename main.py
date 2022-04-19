@@ -2,7 +2,7 @@ import logging
 
 import discord
 from discord.ext import commands
-from t import TOKEN
+from local_config import TOKEN
 
 from bot_data import BotData
 from funcs import RandomThings
