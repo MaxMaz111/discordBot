@@ -6,7 +6,8 @@ from t import TOKEN
 
 from bot_data import BotData
 from funcs import RandomThings
-from DailyReward import DailyReward
+from all_functions.DailyReward import DailyReward
+from all_functions.TimeCommands import TimeCommands
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
 handler = logging.StreamHandler()
@@ -28,4 +29,5 @@ async def on_ready():
 
 bot.add_cog(RandomThings(data=bot_data))
 bot.add_cog(DailyReward())
+bot.add_cog(TimeCommands())
 bot.run(TOKEN)
