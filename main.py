@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 from all_functions.DailyReward import DailyReward
 from all_functions.TimeCommands import TimeCommands
-from bot_data import BotData
+from data.bot_data import BotData
 from data import db_session
 from funcs import RandomThings
 

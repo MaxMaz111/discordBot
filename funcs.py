@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-import datetime
-from bot_data import BotData
+from data.bot_data import BotData
 
 
 class RandomThings(commands.Cog):
