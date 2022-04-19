@@ -1,14 +1,15 @@
 import logging
+import os
 
 import discord
 from discord.ext import commands
+from dotenv import load_dotenv
 
 from all_functions.DailyReward import DailyReward
 from all_functions.TimeCommands import TimeCommands
 from bot_data import BotData
 from data import db_session
 from funcs import RandomThings
-from local_config import TOKEN
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
@@ -23,7 +24,7 @@ bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 guild_id = 481470012192980993
 
 bot_data = BotData(bot=bot, guild_id=guild_id)
-
+load_dotenv()
 
 @bot.event
 async def on_ready():
@@ -33,4 +34,4 @@ db_session.global_init('db/accounts.db')
 bot.add_cog(RandomThings(data=bot_data))
 bot.add_cog(DailyReward())
 bot.add_cog(TimeCommands())
-bot.run(TOKEN)
+bot.run(os.getenv('TOKEN'))
