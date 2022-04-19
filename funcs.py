@@ -20,26 +20,26 @@ class RandomThings(commands.Cog):
     async def members(self, ctx):
         await ctx.send('\n'.join(map(str, self.data.get_members())))
 
-    @commands.command()
-    async def time(self, ctx):
-        await ctx.send(datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M%p"))
+    # @commands.command()
+    # async def time(self, ctx):
+    #     await ctx.send(datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M%p"))
 
     @commands.command()
     async def balance(self, ctx):
         await ctx.send('на вашем балансе....')
-
-    @commands.command()
-    @commands.cooldown(1, 60 * 60 * 24, commands.BucketType.user)
-    async def award(self, ctx):
-        embed = discord.Embed(title="Вы успешно получили свою награду - 20 :coin:",
-                              colour=0x778899)
-        embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=embed)
-
-    @award.error
-    async def award_error(self, ctx, error):
-        if isinstance(error, discord.ext.commands.CommandOnCooldown):
-            await ctx.send('попробуй позже')
+    #
+    # @commands.command()
+    # @commands.cooldown(1, 60 * 60 * 24, commands.BucketType.user)
+    # async def award(self, ctx):
+    #     embed = discord.Embed(title="Вы успешно получили свою награду - 20 :coin:",
+    #                           colour=0x778899)
+    #     embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    #     await ctx.send(embed=embed)
+    #
+    # @award.error
+    # async def award_error(self, ctx, error):
+    #     if isinstance(error, discord.ext.commands.CommandOnCooldown):
+    #         await ctx.send('попробуй позже')
 
     @commands.command()
     async def give(self, ctx, id, n: int):
