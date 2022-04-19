@@ -15,9 +15,14 @@ class RandomThings(commands.Cog):
             f'Привет, {member.name}!'
         )
 
+    def get_members(self, ctx):
+        guild_id = ctx.guild.id
+        return list(self.data.get_members(guild_id))
+
     @commands.command()
     async def members(self, ctx):
-        await ctx.send('\n'.join(map(str, self.data.get_members())))
+        members_str = '\n'.join(map(str, self.get_members(ctx)))
+        await ctx.send(members_str)
 
     # @commands.command()
     # async def time(self, ctx):
@@ -42,7 +47,7 @@ class RandomThings(commands.Cog):
 
     @commands.command()
     async def give(self, ctx, id, n: int):
-        members = self.data.get_members()
+        members = self.get_members(ctx)
         if ctx.message.mentions:
             id = ctx.message.mentions[0].id
         id = int(id)
