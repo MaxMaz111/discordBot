@@ -1,3 +1,5 @@
+from typing import List
+
 from data import db_session
 from data.models import Users, Money
 
@@ -45,3 +47,6 @@ class DbData:
         if not user_money:
             user_money = self.init_money(user)
         return user_money
+
+    def top_users_by_money(self, limit: int) -> List[Users]:
+        return self.db_sess.query(Users).join(Money).order_by(Money.balance).limit(limit).all()
