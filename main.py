@@ -40,8 +40,8 @@ load_dotenv()
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
-
-bot.add_cog(DailyRewardCommands(bot_data=bot_data))
+daily_reward = 20
+bot.add_cog(DailyRewardCommands(bot_data=bot_data, daily_reward=daily_reward))
 bot.add_cog(TimeCommands())
 bot.add_cog(BalanceCommands(data=bot_data))
 bot.add_cog(MemberCommands(data=bot_data))
