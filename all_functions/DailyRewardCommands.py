@@ -5,18 +5,18 @@ from data.bot_data import BotData
 
 
 class DailyRewardCommands(commands.Cog):
-    def __init__(self, bot_data: BotData):
+    def __init__(self, bot_data: BotData, daily_reward: int):
         self.bot_data = bot_data
+        self.daily_reward = daily_reward
 
     @commands.command()
     @commands.cooldown(1, 60 * 60 * 24, commands.BucketType.user)
     async def reward(self, ctx):
-        embed = discord.Embed(title="Вы успешно получили свою награду - 20 :coin:",
+        self.bot_data.update_money(ctx=ctx, delta=20)
+
+        embed = discord.Embed(title=f"Вы успешно получили свою награду - {self.daily_reward} :coin:",
                               colour=0x778899)
         embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-        user_id = ctx.message.author.id
-        guild_id = ctx.guild.id
-        self.bot_data.db.add_money(self.bot_data.db.get_user(user_id, guild_id), 20)
         await ctx.send(embed=embed)
 
     @reward.error
