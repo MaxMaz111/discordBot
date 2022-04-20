@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from all_functions.DailyReward import DailyReward
 from all_functions.TimeCommands import TimeCommands
 from all_functions.BalanceCommands import BalanceCommands
-from all_functions.Member_Commands import MemberCommands
+from all_functions.MembersCommands import MemberCommands
 from data.bot_data import BotData
 from data import db_session
 from data.db_data import DbData
