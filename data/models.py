@@ -6,7 +6,6 @@ from data.db_session import SqlAlchemyBase
 
 class Statistics(SqlAlchemyBase):
     __tablename__ = 'statistics'
-    user = orm.relation('Users')
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String)
 
