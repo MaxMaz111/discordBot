@@ -2,7 +2,7 @@ from typing import List
 
 from data.db_data import DbData
 from data.guild_data import GuildData
-from data.models import Users
+from data.models import Users, Money
 
 
 class BotData:
@@ -22,9 +22,9 @@ class BotData:
         guild_id = ctx.guild.id
         return self.db.get_user(discord_id=discord_id, guild_id=guild_id)
 
-    def get_money(self, ctx) -> int:
+    def get_money(self, ctx) -> Money:
         user = self.get_user(ctx=ctx)
-        return self.db.get_money(user=user).balance
+        return self.db.get_money(user=user)
 
     def update_money(self, delta: int, user: Users = None, ctx=None):
         if user is None:

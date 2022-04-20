@@ -39,21 +39,5 @@ class BalanceCommands(commands.Cog):
 
     @commands.command()
     async def balance(self, ctx):
-        user_id = ctx.message.author.id
-        guild_id = ctx.guild.id
-        money = self.bot_data.db.get_money(self.bot_data.db.get_user(user_id, guild_id))
+        money = self.bot_data.get_money(ctx)
         await ctx.send(f'На вашем балансе {money.balance} монет')
-
-    @commands.command()
-    async def top(self, ctx):
-        ans = []
-        for i in self.bot_data.get_members(ctx.guild.id, ctx):
-            tmp = self.bot_data.db.get_money(self.bot_data.db.get_user(i.id, ctx.guild.id)).balance
-            ans.append((f'{i.name}#{i.discriminator}', tmp))
-        ans.sort(key=lambda x: (x[1], x[0]), reverse=True)
-        ans = ans[:10]
-        ans = [f'{x[0]} - {x[1]}' for x in ans]
-        print(*ans)
-        msg = 'Топ людей на сервере:\n'
-        msg += '\n'.join(ans)
-        await ctx.send(msg)
