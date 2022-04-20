@@ -1,4 +1,5 @@
-from typing import List
+import typing
+from typing import List, Tuple
 
 from data import db_session
 from data.models import Users, Money
@@ -48,10 +49,10 @@ class DbData:
             user_money = self.init_money(user)
         return user_money
 
-    def top_users_by_money(self, guild_id: int, limit: int) -> List[Users]:
+    def top_users_by_money(self, guild_id: int, member_ids: typing.Set[int], limit: int) -> List[Tuple[Users, Money]]:
         return self.db_sess.query(Users) \
-            .filter(Users.guild_id == guild_id) \
+            .filter(Users.guild_id == guild_id and Users.discord_id in member_ids) \
             .join(Money) \
-            .order_by(Money.balance) \
+            .order_by(Money.balance.desc()) \
             .limit(limit) \
             .all()

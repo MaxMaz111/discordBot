@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 
+from all_functions.MembersCommands import MemberCommands
 from data.bot_data import BotData
 
 
@@ -41,3 +42,23 @@ class BalanceCommands(commands.Cog):
     async def balance(self, ctx):
         money = self.bot_data.get_money(ctx)
         await ctx.send(f'На вашем балансе {money.balance} монет')
+
+    @commands.command()
+    async def top(self, ctx):
+        top_users = self.bot_data.top_users_by_money(ctx=ctx, limit=10)
+
+        guild_members = self.bot_data.get_members(ctx=ctx)
+        id_to_guild_member = dict()
+        for member in guild_members:
+            id_to_guild_member[member.id] = member
+
+        ans = []
+        for user, money in top_users:
+            member = id_to_guild_member[user.discord_id]
+            nickname = MemberCommands.to_nickname(member)
+            result_str = f'{nickname} - {money.balance}'
+            ans.append(result_str)
+
+        msg = 'Топ людей на сервере:\n'
+        msg += '\n'.join(ans)
+        await ctx.send(msg)

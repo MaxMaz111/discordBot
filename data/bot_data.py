@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 from data.db_data import DbData
 from data.guild_data import GuildData
@@ -37,6 +37,10 @@ class BotData:
 
         self.db.update_money(user=user, delta=delta)
 
-    def top_users_by_money(self, limit, guild_id=None, ctx=None) -> List[Users]:
+    def top_users_by_money(self, limit, guild_id=None, ctx=None, member_ids: set = None) -> List[Tuple[Users, Money]]:
         guild_id = BotData.get_guild_id(guild_id=guild_id, ctx=ctx)
-        return self.db.top_users_by_money(guild_id=guild_id, limit=limit)
+        if member_ids is None:
+            members = self.get_members(guild_id=guild_id)
+            member_ids = set(map(lambda x: x.id, members))
+
+        return self.db.top_users_by_money(guild_id=guild_id, member_ids=member_ids, limit=limit)
