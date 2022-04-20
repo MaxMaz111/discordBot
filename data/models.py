@@ -12,6 +12,9 @@ class Statistics(SqlAlchemyBase):
 
 
 class UserStatistics(SqlAlchemyBase):
+    __table_args__ = (
+        UniqueConstraint('user_id', 'statistic_id'),
+    )
     __tablename__ = 'user_statistics'
     statistics = orm.relation('Statistics')
     user = orm.relation('Users')
