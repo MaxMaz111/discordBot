@@ -50,9 +50,8 @@ class DbData:
         return user_money
 
     def top_users_by_money(self, guild_id: int, member_ids: typing.Set[int], limit: int) -> List[Tuple[Users, Money]]:
-        return self.db_sess.query(Users) \
+        return self.db_sess.query(Users, Money) \
             .filter(Users.guild_id == guild_id and Users.discord_id in member_ids) \
-            .join(Money) \
             .order_by(Money.balance.desc()) \
             .limit(limit) \
             .all()
