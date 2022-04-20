@@ -21,15 +21,22 @@ class DbData:
         self.db_sess.commit()
         return user
 
-    def set_money(self, user: Users, amount: int) -> None:
+    def set_zero(self, user: Users) -> Money:
         money = Money()
         money.user_id = user.id
-        money.balance = amount
+        money.balance = 0
         self.db_sess.add(money)
         self.db_sess.commit()
+        return money
 
-    def get_money(self, user: Users) -> int:
+    def set_money(self, user: Users, amount: int) -> Money:
+        money = self.get_money(user)
+        money.balance = amount
+        self.db_sess.commit()
+        return money
+
+    def get_money(self, user: Users) -> Money:
         user_money = self.db_sess.query(Money).filter(Money.user_id == user.id).first()
         if not user_money:
-            self.set_money(user, 0)
-        return user_money.balance
+            user_money = self.set_zero(user)
+        return user_money

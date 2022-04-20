@@ -19,8 +19,8 @@ class Users(SqlAlchemyBase):
     )
     __tablename__ = 'users'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    discord_id = sqlalchemy.Column(sqlalchemy.Integer, unique=True)
-    guild_id = sqlalchemy.Column(sqlalchemy.Integer, unique=True)
+    discord_id = sqlalchemy.Column(sqlalchemy.Integer)
+    guild_id = sqlalchemy.Column(sqlalchemy.Integer)
 
 
 class Money(SqlAlchemyBase):

@@ -5,9 +5,9 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
+from all_functions.BalanceCommands import BalanceCommands
 from all_functions.DailyReward import DailyReward
 from all_functions.TimeCommands import TimeCommands
-from all_functions.BalanceCommands import BalanceCommands
 from data.bot_data import BotData
 from data.db_data import DbData
 from data.guild_data import GuildData
@@ -31,8 +31,6 @@ guilds = [
 
 db_name = 'db/accounts.db'
 db = DbData(db_name=db_name)
-# 330393466322288640 481470012192980993
-
 
 bot_data = BotData(guilds=guilds, db=db)
 load_dotenv()
