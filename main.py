@@ -6,10 +6,9 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 from all_functions.BalanceCommands import BalanceCommands
-from all_functions.DailyReward import DailyReward
+from all_functions.DailyRewardCommands import DailyRewardCommands
 from all_functions.MembersCommands import MemberCommands
 from all_functions.TimeCommands import TimeCommands
-
 from data.bot_data import BotData
 from data.db_data import DbData
 from data.guild_data import GuildData
@@ -41,8 +40,8 @@ load_dotenv()
 async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
-
-bot.add_cog(DailyReward())
+daily_reward = 20
+bot.add_cog(DailyRewardCommands(bot_data=bot_data, daily_reward=daily_reward))
 bot.add_cog(TimeCommands())
 bot.add_cog(BalanceCommands(data=bot_data))
 bot.add_cog(MemberCommands(data=bot_data))

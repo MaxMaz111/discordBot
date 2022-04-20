@@ -1,15 +1,16 @@
-from discord.ext import commands
 import discord
+from discord.ext import commands
+
 from data.bot_data import BotData
 
 
 class BalanceCommands(commands.Cog):
     def __init__(self, data: BotData):
-        self.data = data
+        self.bot_data = data
 
     @commands.command()
     async def give(self, ctx, id, n: int):
-        members = self.data.get_members(ctx)
+        members = self.bot_data.get_members(ctx)
         if ctx.message.mentions:
             id = ctx.message.mentions[0].id
         id = int(id)
@@ -38,4 +39,5 @@ class BalanceCommands(commands.Cog):
 
     @commands.command()
     async def balance(self, ctx):
-        await ctx.send('на вашем балансе....')
+        money = self.bot_data.get_money(ctx)
+        await ctx.send(f'На вашем балансе {money.balance} монет')
