@@ -48,5 +48,10 @@ class DbData:
             user_money = self.init_money(user)
         return user_money
 
-    def top_users_by_money(self, limit: int) -> List[Users]:
-        return self.db_sess.query(Users).join(Money).order_by(Money.balance).limit(limit).all()
+    def top_users_by_money(self, guild_id: int, limit: int) -> List[Users]:
+        return self.db_sess.query(Users) \
+            .filter(Users.guild_id == guild_id) \
+            .join(Money) \
+            .order_by(Money.balance) \
+            .limit(limit) \
+            .all()

@@ -12,9 +12,14 @@ class BotData:
             self.guild_id_to_data[guild.guild_id] = guild
         self.db = db
 
-    def get_members(self, guild_id: int = None, ctx=None):
+    @staticmethod
+    def get_guild_id(guild_id: int = None, ctx=None) -> int:
         if guild_id is None:
             guild_id = ctx.guild.id
+        return guild_id
+
+    def get_members(self, guild_id: int = None, ctx=None):
+        guild_id = BotData.get_guild_id(guild_id=guild_id, ctx=ctx)
         return self.guild_id_to_data[guild_id].get_members()
 
     def get_user(self, ctx) -> Users:
@@ -32,4 +37,6 @@ class BotData:
 
         self.db.update_money(user=user, delta=delta)
 
-
+    def top_users_by_money(self, limit, guild_id=None, ctx=None) -> List[Users]:
+        guild_id = BotData.get_guild_id(guild_id=guild_id, ctx=ctx)
+        return self.db.top_users_by_money(guild_id=guild_id, limit=limit)
