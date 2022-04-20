@@ -8,11 +8,11 @@ from dotenv import load_dotenv
 from all_functions.DailyReward import DailyReward
 from all_functions.TimeCommands import TimeCommands
 from all_functions.BalanceCommands import BalanceCommands
+from all_functions.Member_Commands import MemberCommands
 from data.bot_data import BotData
 from data import db_session
 from data.db_data import DbData
 from data.guild_data import GuildData
-from funcs import RandomThings
 
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
@@ -42,8 +42,8 @@ async def on_ready():
     print('We have logged in as {0.user}'.format(bot))
 
 
-bot.add_cog(RandomThings(data=bot_data))
 bot.add_cog(DailyReward())
 bot.add_cog(TimeCommands())
 bot.add_cog(BalanceCommands(data=bot_data))
+bot.add_cog(MemberCommands(data=bot_data))
 bot.run(os.getenv('TOKEN'))
