@@ -13,7 +13,8 @@ class GuildData:
 
     def get_members(self):
         if self.members is None:
-            self.members = set(
-                map(lambda x: x.id, filter(lambda x: not x.bot, self.get_guild().members))
-            )
+            members = self.get_guild().members
+            self.members = list(filter(lambda x: not x.bot, members))
         return self.members
+
+
