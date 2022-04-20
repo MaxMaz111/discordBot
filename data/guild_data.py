@@ -5,6 +5,7 @@ class GuildData:
 
         self.guild = None
         self.members = None
+        self.members_nicknames = None
 
     def get_guild(self):
         if self.guild is None:
@@ -17,3 +18,10 @@ class GuildData:
                 map(lambda x: x.id, filter(lambda x: not x.bot, self.get_guild().members))
             )
         return self.members
+
+    def get_members_nicknames(self):
+        if self.members_nicknames is None:
+            self.members_nicknames = set(
+                map(lambda x: x.name + '#' + x.discriminator, filter(lambda x: not x.bot, self.get_guild().members))
+            )
+        return self.members_nicknames

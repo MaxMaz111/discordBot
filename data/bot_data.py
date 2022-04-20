@@ -17,4 +17,8 @@ class BotData:
             guild_id = ctx.guild.id
         return self.guild_id_to_data[guild_id].get_members()
 
+    def get_members_nicknames(self, guild_id=None, ctx=None):
+        if guild_id is None:
+            guild_id = ctx.guild.id
+        return self.guild_id_to_data[guild_id].get_members_nicknames()
 

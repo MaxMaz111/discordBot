@@ -15,6 +15,6 @@ class MemberCommands(commands.Cog):
 
     @commands.command()
     async def members(self, ctx):
-        members_str = '\n'.join(map(str, self.data.get_members(ctx=ctx)))
+        members_str = '\n'.join(map(str, self.data.get_members_nicknames(ctx=ctx)))
         await ctx.send(members_str)
 
