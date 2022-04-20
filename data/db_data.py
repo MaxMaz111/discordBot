@@ -35,6 +35,12 @@ class DbData:
         self.db_sess.commit()
         return money
 
+    def add_money(self, user: Users, amount: int) -> Money:
+        money = self.get_money(user)
+        money.balance += amount
+        self.db_sess.commit()
+        return money
+
     def get_money(self, user: Users) -> Money:
         user_money = self.db_sess.query(Money).filter(Money.user_id == user.id).first()
         if not user_money:

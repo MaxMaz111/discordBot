@@ -9,7 +9,6 @@ class BotData:
         self.guild_id_to_data = {}
         for guild in guilds:
             self.guild_id_to_data[guild.guild_id] = guild
-
         self.db = db
 
     def get_members(self, guild_id=None, ctx=None):
