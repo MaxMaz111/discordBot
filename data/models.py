@@ -8,8 +8,16 @@ class Statistics(SqlAlchemyBase):
     __tablename__ = 'statistics'
     user = orm.relation('Users')
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('users.id'))
     name = sqlalchemy.Column(sqlalchemy.String)
+
+
+class UserStatistics(SqlAlchemyBase):
+    __tablename__ = 'user_statistics'
+    statistics = orm.relation('Statistics')
+    user = orm.relation('Users')
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('users.id'))
+    statistic_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('statistics.id'))
     value = sqlalchemy.Column(sqlalchemy.Integer)
 
 
