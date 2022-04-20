@@ -6,8 +6,9 @@ from data.bot_data import BotData
 
 
 class BalanceCommands(commands.Cog):
-    def __init__(self, data: BotData):
+    def __init__(self, data: BotData, top_limit: int):
         self.bot_data = data
+        self.top_limit = top_limit
 
     @commands.command()
     async def give(self, ctx, id, n: int):
@@ -45,7 +46,7 @@ class BalanceCommands(commands.Cog):
 
     @commands.command()
     async def top(self, ctx):
-        top_id_balances = self.bot_data.top_users_by_money(ctx=ctx, limit=10)
+        top_id_balances = self.bot_data.top_users_by_money(ctx=ctx, limit=self.top_limit)
 
         guild_members = self.bot_data.get_members(ctx=ctx)
         id_to_guild_member = dict()
