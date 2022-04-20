@@ -15,6 +15,8 @@ class MemberCommands(commands.Cog):
 
     @commands.command()
     async def members(self, ctx):
-        members_str = '\n'.join(map(lambda x: x.name + '#' + x.discriminator, self.data.get_members(ctx=ctx)))
-        await ctx.send(members_str)
+        members = self.data.get_members(ctx=ctx)
+        nicknames = map(lambda x: x.name + '#' + x.discriminator, members)
+        nickname_str = '\n'.join(nicknames)
+        await ctx.send(nickname_str)
 
