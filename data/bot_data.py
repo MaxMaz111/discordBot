@@ -13,7 +13,7 @@ class BotData:
         self.db = db
 
     def get_members(self, guild_id=None, ctx=None):
-        if guild_id is not None:
+        if guild_id is None:
             guild_id = ctx.guild.id
         return self.guild_id_to_data[guild_id].get_members()
 
