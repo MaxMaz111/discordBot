@@ -45,7 +45,7 @@ class BalanceCommands(commands.Cog):
 
     @commands.command()
     async def top(self, ctx):
-        top_users = self.bot_data.top_users_by_money(ctx=ctx, limit=10)
+        top_id_balances = self.bot_data.top_users_by_money(ctx=ctx, limit=10)
 
         guild_members = self.bot_data.get_members(ctx=ctx)
         id_to_guild_member = dict()
@@ -53,10 +53,10 @@ class BalanceCommands(commands.Cog):
             id_to_guild_member[member.id] = member
 
         ans = []
-        for user, money in top_users:
-            member = id_to_guild_member[user.discord_id]
+        for discord_id, balance in top_id_balances:
+            member = id_to_guild_member[discord_id]
             nickname = MemberCommands.to_nickname(member)
-            result_str = f'{nickname} - {money.balance}'
+            result_str = f'{nickname} - {balance}'
             ans.append(result_str)
 
         msg = 'Топ людей на сервере:\n'

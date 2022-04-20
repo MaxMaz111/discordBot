@@ -37,7 +37,7 @@ class BotData:
 
         self.db.update_money(user=user, delta=delta)
 
-    def top_users_by_money(self, limit, guild_id=None, ctx=None, member_ids: set = None) -> List[Tuple[Users, Money]]:
+    def top_users_by_money(self, limit, guild_id=None, ctx=None, member_ids: set = None) -> List[Tuple[int, int]]:
         guild_id = BotData.get_guild_id(guild_id=guild_id, ctx=ctx)
         if member_ids is None:
             members = self.get_members(guild_id=guild_id)
