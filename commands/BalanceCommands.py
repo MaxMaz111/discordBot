@@ -43,8 +43,6 @@ class BalanceCommands(commands.Cog):
             ctx=ctx,
             colour=0x78ccf0,
             description=description,
-            footer_text=sender.name,
-            footer_icon_url=sender.avatar_url,
         )
 
     @give.error

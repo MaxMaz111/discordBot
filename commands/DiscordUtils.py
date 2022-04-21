@@ -3,8 +3,14 @@ from discord.embeds import EmptyEmbed, Embed
 
 
 async def show_embed(ctx,
-                     colour: int = EmptyEmbed, description: str = EmptyEmbed, title: str = EmptyEmbed,
-                     footer_text: str = EmptyEmbed, footer_icon_url: str = EmptyEmbed):
+                     colour: int = EmptyEmbed,
+                     description: str = EmptyEmbed,
+                     title: str = EmptyEmbed,
+                     author=None,
+                     ):
+    if author is None:
+        author = ctx.message.author
+
     embed = discord.Embed(colour=colour, description=description, title=title)
-    embed.set_footer(text=footer_text, icon_url=footer_icon_url)
+    embed.set_footer(text=author.name, icon_url=author.avatar_url)
     await ctx.send(embed=embed)
