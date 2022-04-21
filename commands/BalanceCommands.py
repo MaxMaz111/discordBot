@@ -1,7 +1,10 @@
+from typing import Tuple
+
 import discord
 from discord.ext import commands
 
 from commands import DiscordUtils
+from commands.DiscordUtils import EmbedColor
 from commands.MembersCommands import MemberCommands
 from data.bot_data import BotData
 
@@ -27,21 +30,21 @@ class BalanceCommands(commands.Cog):
 
         recipient_id = BalanceCommands.get_recipient_id(ctx=ctx, recipient_id_argument=recipient_id)
 
-        def try_give() -> str:
+        def try_give() -> Tuple[str, EmbedColor]:
             members = self.bot_data.get_members(ctx=ctx)
             member_ids = MemberCommands.to_ids(members)
             if recipient_id not in member_ids:
-                return f'<@{recipient_id}> нет на сервере.\n\nНе удастся передать монетки'
+                return f'<@{recipient_id}> нет на сервере.\n\nНе удастся передать монетки', EmbedColor.PROBLEM_OCCURRED
 
             if recipient_id == sender_id:
-                return f'Нельзя передать монетки самому себе'
+                return f'Нельзя передать монетки самому себе', EmbedColor.PROBLEM_OCCURRED
 
-            return f'Вы передали {amount} :coin: пользователю <@{recipient_id}>'
+            return f'Вы передали {amount} :coin: пользователю <@{recipient_id}>', EmbedColor.SUCCESS
 
-        description = try_give()
+        description, colour = try_give()
         await DiscordUtils.show_embed(
             ctx=ctx,
-            colour=0x78ccf0,
+            colour=colour,
             description=description,
         )
 
@@ -52,7 +55,7 @@ class BalanceCommands(commands.Cog):
         if isinstance(error, discord.ext.commands.CommandError):
             await DiscordUtils.show_embed(
                 ctx=ctx,
-                colour=0xff2e2e,
+                colour=EmbedColor.ERROR,
                 title='Не удалось передать монетки',
                 description='Укажите человека, его id или линк, а затем количество монеток,'
                             f' которое вы хотите передать',

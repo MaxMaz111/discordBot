@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 
 from commands import DiscordUtils
+from commands.DiscordUtils import EmbedColor
 from data.bot_data import BotData
 
 
@@ -18,7 +19,7 @@ class DailyRewardCommands(commands.Cog):
         await DiscordUtils.show_embed(
             ctx=ctx,
             title=f"Вы успешно получили свою награду - {self.daily_reward} :coin:",
-            colour=0x778899,
+            colour=EmbedColor.SUCCESS,
         )
 
     @reward.error
@@ -28,5 +29,5 @@ class DailyRewardCommands(commands.Cog):
             await DiscordUtils.show_embed(
                 ctx=ctx,
                 title=f'Вы уже получали свою награду, приходите позже.',
-                colour=0xff2e2e,
+                colour=EmbedColor.ERROR,
             )
