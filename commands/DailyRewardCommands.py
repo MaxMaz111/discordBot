@@ -25,5 +25,8 @@ class DailyRewardCommands(commands.Cog):
     async def reward_error(self, ctx, error):
         print(error.args)
         if isinstance(error, discord.ext.commands.CommandOnCooldown):
-            embed = discord.Embed(title=f'Вы уже получали свою награду, приходите позже.', colour=0xff2e2e)
-            await ctx.send(embed=embed)
+            await DiscordUtils.show_embed(
+                ctx=ctx,
+                title=f'Вы уже получали свою награду, приходите позже.',
+                colour=0xff2e2e,
+            )
