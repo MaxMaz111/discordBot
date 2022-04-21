@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-from all_functions.MembersCommands import MemberCommands
+from commands.MembersCommands import MemberCommands
 from data.bot_data import BotData
 
 
