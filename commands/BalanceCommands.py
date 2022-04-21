@@ -39,6 +39,18 @@ class BalanceCommands(commands.Cog):
             if recipient_id == sender_id:
                 return f'Нельзя передать монетки самому себе', EmbedColor.PROBLEM_OCCURRED
 
+            sender_money = self.bot_data.get_money(ctx)
+            if sender_money.balance < amount:
+                return f'У вас недостаточно средств', EmbedColor.PROBLEM_OCCURRED
+
+            recipient = self.bot_data.get_user(discord_id=recipient_id, guild_id=ctx.guild.id)
+            self.bot_data.send_money(
+                sender=sender,
+                recipient=recipient,
+                amount=amount,
+                sender_money=sender_money
+            )
+
             return f'Вы передали {amount} :coin: пользователю <@{recipient_id}>', EmbedColor.SUCCESS
 
         description, colour = try_give()
