@@ -1,4 +1,4 @@
-/local_config.py
 /.idea/*
 /db/accounts.db
 /.env
+/local_config.py

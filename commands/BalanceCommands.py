@@ -35,12 +35,15 @@ class BalanceCommands(commands.Cog):
             member_ids = MemberCommands.to_ids(members)
             if recipient_id not in member_ids:
                 return f'<@{recipient_id}> нет на сервере.\n\nНе удастся передать монетки', EmbedColor.PROBLEM_OCCURRED
-
             if recipient_id == sender_id:
                 return f'Нельзя передать монетки самому себе', EmbedColor.PROBLEM_OCCURRED
-
+            sender_balance = self.bot_data.get_money(ctx)
+            if sender_balance.balance < amount:
+                return f'У вас недостаточно средств', EmbedColor.PROBLEM_OCCURRED
+            self.bot_data.update_money(-amount, ctx=ctx)
+            recipient = self.bot_data.get_user(discord_id=recipient_id, guild_id=ctx.guild.id)
+            self.bot_data.update_money(amount, recipient)
             return f'Вы передали {amount} :coin: пользователю <@{recipient_id}>', EmbedColor.SUCCESS
-
         description, colour = try_give()
         await DiscordUtils.show_embed(
             ctx=ctx,

@@ -22,7 +22,9 @@ class BotData:
         guild_id = BotData.get_guild_id(guild_id=guild_id, ctx=ctx)
         return self.guild_id_to_data[guild_id].get_members()
 
-    def get_user(self, ctx) -> Users:
+    def get_user(self, ctx=None, discord_id: int = None, guild_id: int = None) -> Users:
+        if ctx is None:
+            return self.db.get_user(discord_id=discord_id, guild_id=guild_id)
         discord_id = ctx.message.author.id
         guild_id = ctx.guild.id
         return self.db.get_user(discord_id=discord_id, guild_id=guild_id)
@@ -34,7 +36,6 @@ class BotData:
     def update_money(self, delta: int, user: Users = None, ctx=None):
         if user is None:
             user = self.get_user(ctx=ctx)
-
         self.db.update_money(user=user, delta=delta)
 
     def top_users_by_money(self, limit, guild_id=None, ctx=None, member_ids: set = None) -> List[Tuple[int, int]]:
