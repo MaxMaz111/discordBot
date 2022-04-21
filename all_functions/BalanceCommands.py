@@ -45,7 +45,7 @@ class BalanceCommands(commands.Cog):
         await ctx.send(f'На вашем балансе {money.balance} монет')
 
     @commands.command()
-    async def top(self, ctx):
+    async def top_balances(self, ctx):
         top_id_balances = self.bot_data.top_users_by_money(ctx=ctx, limit=self.top_limit)
 
         guild_members = self.bot_data.get_members(ctx=ctx)
@@ -60,6 +60,6 @@ class BalanceCommands(commands.Cog):
             result_str = f'{nickname} - {balance}'
             ans.append(result_str)
 
-        msg = 'Топ людей на сервере:\n'
+        msg = 'Топ пользователей сервера по балансу:\n'
         msg += '\n'.join(ans)
         await ctx.send(msg)
