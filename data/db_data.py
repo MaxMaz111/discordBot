@@ -56,3 +56,20 @@ class DbData:
             .order_by(Money.balance.desc()) \
             .limit(limit) \
             .all()
+
+    def send_money(self,
+                   sender: Users,
+                   recipient: Users,
+                   amount: int,
+                   sender_money: Money = None,
+                   recipient_money: Money = None):
+        if sender_money is None:
+            sender_money = self.get_money(sender)
+
+        if recipient_money is None:
+            recipient_money = self.get_money(recipient)
+
+        sender_money.balance -= amount
+        recipient_money.balance += amount
+
+        self.db_sess.commit()
