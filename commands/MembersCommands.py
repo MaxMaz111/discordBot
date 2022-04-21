@@ -1,3 +1,5 @@
+from typing import Set
+
 from discord.ext import commands
 from data.bot_data import BotData
 
@@ -16,6 +18,10 @@ class MemberCommands(commands.Cog):
     @staticmethod
     def to_nickname(member) -> str:
         return member.name + '#' + member.discriminator
+
+    @staticmethod
+    def to_ids(members) -> Set[int]:
+        return set(map(lambda x: x.id, members))
 
     @commands.command()
     async def members(self, ctx):
