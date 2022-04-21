@@ -13,10 +13,14 @@ class MemberCommands(commands.Cog):
             f'Привет, {member.name}!'
         )
 
+    @staticmethod
+    def to_nickname(member) -> str:
+        return member.name + '#' + member.discriminator
+
     @commands.command()
     async def members(self, ctx):
         members = self.data.get_members(ctx=ctx)
-        nicknames = map(lambda x: x.name + '#' + x.discriminator, members)
+        nicknames = map(MemberCommands.to_nickname, members)
         nickname_str = '\n'.join(nicknames)
         await ctx.send(nickname_str)
 
