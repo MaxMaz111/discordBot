@@ -12,5 +12,5 @@ async def show_embed(ctx,
         author = ctx.message.author
 
     embed = discord.Embed(colour=colour, description=description, title=title)
-    embed.set_footer(text=author.name, icon_url=author.avatar_url)
+    embed.set_author(name=author.name, icon_url=author.avatar_url)
     await ctx.send(embed=embed)
