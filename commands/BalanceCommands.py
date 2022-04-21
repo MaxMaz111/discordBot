@@ -47,7 +47,8 @@ class BalanceCommands(commands.Cog):
             self.bot_data.send_money(
                 sender=sender,
                 recipient=recipient,
-                sender_money = sender_money
+                amount=amount,
+                sender_money=sender_money
             )
 
             return f'Вы передали {amount} :coin: пользователю <@{recipient_id}>', EmbedColor.SUCCESS
