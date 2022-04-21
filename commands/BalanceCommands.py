@@ -40,7 +40,7 @@ class BalanceCommands(commands.Cog):
 
         description = try_give()
         await DiscordUtils.show_embed(
-            ctx,
+            ctx=ctx,
             colour=0x78ccf0,
             description=description,
             footer_text=sender.name,
@@ -49,12 +49,16 @@ class BalanceCommands(commands.Cog):
 
     @give.error
     async def give_error(self, ctx, error):
+        print(error.args)
+
         if isinstance(error, discord.ext.commands.CommandError):
-            print(error.args)
-            embed = discord.Embed(colour=0xff2e2e, title='Не удалось передать монтеки',
-                                  description='Укажите человека, его id или линк, а затем количество монеток,'
-                                              f' которое вы хотите передать')
-            await ctx.send(embed=embed)
+            await DiscordUtils.show_embed(
+                ctx=ctx,
+                colour=0xff2e2e,
+                title='Не удалось передать монетки',
+                description='Укажите человека, его id или линк, а затем количество монеток,'
+                            f' которое вы хотите передать',
+            )
 
     @commands.command()
     async def balance(self, ctx):
