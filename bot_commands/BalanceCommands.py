@@ -1,4 +1,4 @@
-import discord
+from discord.ext import commands
 from discord.ext import commands
 from discord.ext.commands import Context
 
@@ -8,7 +8,7 @@ from bot_commands.BotException import BotException
 from bot_commands.EmbedUtils import EmbedColor, ActionType
 from bot_commands.MembersCommands import MemberCommands
 from data.bot_data import BotData
-from utils import LogUtils, ErrorUtils
+from utils import ErrorUtils
 
 
 class BalanceCommands(commands.Cog):
@@ -65,7 +65,7 @@ class BalanceCommands(commands.Cog):
         await ErrorUtils.process_error(
             ctx=ctx,
             error=error,
-            title='Не удалось передать монетки',
+            title_prefix='Не удалось передать монетки',
             description='Укажите человека, его id или линк, а затем количество монеток,'
                         f' которое вы хотите передать',
         )
