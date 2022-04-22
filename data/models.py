@@ -1,13 +1,19 @@
+from enum import Enum
+
 import sqlalchemy
 from sqlalchemy import orm, UniqueConstraint
 
 from data.db_session import SqlAlchemyBase
 
 
+class StatisticType(Enum):
+    BOT_COMMANDS_AMOUNT = 'bot_commands_amount'
+
+
 class Statistics(SqlAlchemyBase):
     __tablename__ = 'statistics'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    name = sqlalchemy.Column(sqlalchemy.String)
+    name = sqlalchemy.Column(sqlalchemy.String, unique=True)
 
 
 class UserStatistics(SqlAlchemyBase):

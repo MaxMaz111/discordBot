@@ -2,7 +2,7 @@ import typing
 from typing import List, Tuple
 
 from data import db_session
-from data.models import Users, Money
+from data.models import Users, Money, Statistics, UserStatistics, StatisticType
 
 
 class DbData:
@@ -71,5 +71,64 @@ class DbData:
 
         sender_money.balance -= amount
         recipient_money.balance += amount
+
+        self.db_sess.commit()
+
+    def add_statistic(self, statistic_type: StatisticType) -> Statistics:
+        statistic = Statistics()
+        statistic.name = statistic_type.value
+
+        self.db_sess.add(statistic)
+        self.db_sess.commit()
+
+        return statistic
+
+    def get_statistic(self, statistic_type: StatisticType) -> Statistics:
+        statistic = self.db_sess.query(Statistics).filter(Statistics.name == statistic_type.value).first()
+        if not statistic:
+            statistic = self.add_statistic(statistic_type)
+        return statistic
+
+    def init_user_statistic(self,
+                            user: Users,
+                            statistic: Statistics) -> UserStatistics:
+        user_statistic = UserStatistics()
+        user_statistic.user_id = user.id
+        user_statistic.statistic_id = statistic.id
+        user_statistic.value = 0
+
+        self.db_sess.add(user_statistic)
+        self.db_sess.commit()
+
+        return user_statistic
+
+    def get_user_statistic(self,
+                           user: Users,
+                           statistic: Statistics = None,
+                           statistic_type: StatisticType = None) -> UserStatistics:
+        if not statistic:
+            statistic = self.get_statistic(statistic_type)
+
+        user_statistic = self.db_sess.query(UserStatistics) \
+            .filter(UserStatistics.user_id == user.id and UserStatistics.statistic_id == statistic.id) \
+            .first()
+
+        if not user_statistic:
+            user_statistic = self.init_user_statistic(user, statistic)
+
+        return user_statistic
+
+    def update_user_statistic(self,
+                              user: Users,
+                              statistic_type: StatisticType,
+                              new_value: int = None,
+                              delta: int = None):
+        user_statistic = self.get_user_statistic(user=user, statistic_type=statistic_type)
+
+        old_value = user_statistic.value
+        if new_value is None:
+            new_value = old_value + delta
+
+        user_statistic.value = new_value
 
         self.db_sess.commit()
