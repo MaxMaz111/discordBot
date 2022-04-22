@@ -1,23 +1,23 @@
-from typing import Optional
+from typing import Optional, List
 
-import discord
-from discord import Member
+from discord import Member, Guild
+from discord.ext.commands import Bot
 
 
 class GuildData:
-    def __init__(self, bot, guild_id):
+    def __init__(self, bot: Bot, guild_id: int):
         self.bot = bot
         self.guild_id = guild_id
 
         self.guild = None
         self.members = None
 
-    def get_guild(self) -> discord.Guild:
+    def get_guild(self) -> Guild:
         if self.guild is None:
             self.guild = self.bot.get_guild(self.guild_id)
         return self.guild
 
-    def get_members(self):
+    def get_members(self) -> List[Member]:
         if self.members is None:
             members = self.get_guild().members
             self.members = list(filter(lambda x: not x.bot, members))
