@@ -20,7 +20,7 @@ class BalanceCommands(commands.Cog):
         sender = CommandUtils.get_author(ctx)
         sender_id = int(sender.id)
 
-        recipient_id = CommandUtils.get_mentioned_id(ctx=ctx, recipient_id_argument=recipient_id)
+        recipient_id = CommandUtils.get_mentioned_id(ctx=ctx, mentioned_id_argument=recipient_id)
 
         def try_give() -> Tuple[str, EmbedColor]:
             members = self.bot_data.get_members(ctx=ctx)
