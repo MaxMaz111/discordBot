@@ -5,10 +5,10 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from commands.BalanceCommands import BalanceCommands
-from commands.DailyRewardCommands import DailyRewardCommands
-from commands.MembersCommands import MemberCommands
-from commands.TimeCommands import TimeCommands
+from bot_commands.BalanceCommands import BalanceCommands
+from bot_commands.DailyRewardCommands import DailyRewardCommands
+from bot_commands.MembersCommands import MemberCommands
+from bot_commands.TimeCommands import TimeCommands
 from data.bot_data import BotData
 from data.db_data import DbData
 from data.guild_data import GuildData
