@@ -1,4 +1,3 @@
-import logging
 import os
 
 import discord
@@ -12,12 +11,10 @@ from bot_commands.TimeCommands import TimeCommands
 from data.bot_data import BotData
 from data.db_data import DbData
 from data.guild_data import GuildData
+from utils import LogUtils
 
-logger = logging.getLogger('discord')
-logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-logger.addHandler(handler)
+discord_logger_format = '%(asctime)s:%(levelname)s:%(name)s: %(message)s'
+LogUtils.init_discord_logger(format=discord_logger_format)
 
 intents = discord.Intents.default()
 intents.members = True
