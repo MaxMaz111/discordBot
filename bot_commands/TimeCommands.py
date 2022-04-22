@@ -6,7 +6,7 @@ import pytz
 from discord.ext import commands
 
 from bot_commands import EmbedUtils
-from bot_commands.EmbedUtils import EmbedColor
+from bot_commands.EmbedUtils import EmbedColor, ActionType
 
 
 class TimeCommands(commands.Cog):
@@ -67,4 +67,5 @@ class TimeCommands(commands.Cog):
             ctx=ctx,
             title=title,
             colour=color,
+            action_type=ActionType.ASKED,
         )

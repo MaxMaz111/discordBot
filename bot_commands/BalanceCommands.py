@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 from bot_commands import EmbedUtils
-from bot_commands.EmbedUtils import EmbedColor
+from bot_commands.EmbedUtils import EmbedColor, ActionType
 from bot_commands.MembersCommands import MemberCommands
 from data.bot_data import BotData
 import bot_commands.CommandUtils as CommandUtils
@@ -50,6 +50,7 @@ class BalanceCommands(commands.Cog):
             ctx=ctx,
             colour=colour,
             description=description,
+            action_type=ActionType.EXECUTED,
         )
 
     @give.error
@@ -63,6 +64,7 @@ class BalanceCommands(commands.Cog):
                 title='Не удалось передать монетки',
                 description='Укажите человека, его id или линк, а затем количество монеток,'
                             f' которое вы хотите передать',
+                action_type=ActionType.ASKED,
             )
 
     @commands.command()
@@ -72,6 +74,7 @@ class BalanceCommands(commands.Cog):
         await EmbedUtils.show_embed(ctx=ctx,
                                     colour=EmbedColor.SUCCESS,
                                     description=f'На вашем балансе {money_amount} :coin:',
+                                    action_type=ActionType.ASKED,
                                     )
 
     @commands.command()
@@ -96,4 +99,5 @@ class BalanceCommands(commands.Cog):
                                     colour=EmbedColor.ALL_OK,
                                     title='Топ пользователей сервера по балансу',
                                     description='\n'.join(ans),
+                                    action_type=ActionType.ASKED,
                                     )

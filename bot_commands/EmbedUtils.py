@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 
 import discord
 from discord import Member
@@ -13,17 +13,32 @@ class EmbedColor(Enum):
     ALL_OK = 0x4d4d4d
 
 
+class ActionType(Enum):
+    ASKED = 'asked'
+    EXECUTED = 'executed'
+
+
+class RuLocalization:
+    action_type_to_verb = {
+        ActionType.ASKED: 'Запросил(а)',
+        ActionType.EXECUTED: 'Выполнил(а)'
+    }
+
+
 def create_command_embed(ctx,
-                         colour: EmbedColor,
+                         colour: EmbedColor = EmbedColor.SUCCESS,
                          description: str = EmptyEmbed,
                          title: str = EmptyEmbed,
                          author: Member = None,
+                         action_type: ActionType = ActionType.ASKED,
                          ) -> Embed:
     if author is None:
         author = ctx.message.author
 
     embed = discord.Embed(colour=colour.value, description=description, title=title)
-    embed.set_footer(text=f'Выполнил(а) {CommandUtils.to_nickname(author)}', icon_url=author.avatar_url, )
+
+    action_verb = RuLocalization.action_type_to_verb[action_type]
+    embed.set_footer(text=f'{action_verb} {CommandUtils.to_nickname(author)}', icon_url=author.avatar_url, )
 
     return embed
 
