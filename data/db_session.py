@@ -20,7 +20,7 @@ def global_init(db_file):
         raise Exception("Необходимо указать файл базы данных.")
 
     conn_str = f'sqlite:///{db_file.strip()}?check_same_thread=False'
-    LogUtils.get_bot_logger().debug(msg=f"Подключение к базе данных по адресу {conn_str}")
+    LogUtils.get_bot_logger().info(msg=f"Подключение к базе данных по адресу {conn_str}")
 
     engine = sa.create_engine(conn_str, echo=False)
     __factory = orm.sessionmaker(bind=engine)

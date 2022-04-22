@@ -9,6 +9,7 @@ from bot_commands.EmbedUtils import EmbedColor, ActionType
 from bot_commands.MembersCommands import MemberCommands
 from data.bot_data import BotData
 import bot_commands.CommandUtils as CommandUtils
+from utils import LogUtils
 
 
 class BalanceCommands(commands.Cog):
@@ -65,7 +66,7 @@ class BalanceCommands(commands.Cog):
                          ctx: Context,
                          error: Exception,
                          ):
-        print(error.args)
+        LogUtils.get_bot_logger().error(msg=str(error))
 
         if isinstance(error, discord.ext.commands.CommandError):
             await EmbedUtils.show_embed(

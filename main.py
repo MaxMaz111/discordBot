@@ -35,7 +35,7 @@ load_dotenv()
 
 @bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(bot))
+    LogUtils.get_bot_logger().info(msg='We have logged in as {0.user}'.format(bot))
 
 daily_reward = 20
 bot.add_cog(DailyRewardCommands(bot_data=bot_data, daily_reward=daily_reward))
