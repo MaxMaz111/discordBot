@@ -5,8 +5,8 @@ import discord
 from data.bot_data import BotData
 from discord.ext import commands
 import bot_commands.CommandUtils as CommandUtils
-from bot_commands import DiscordUtils
-from bot_commands.DiscordUtils import EmbedColor
+from bot_commands import EmbedUtils
+from bot_commands.EmbedUtils import EmbedColor
 
 
 class MemberCommands(commands.Cog):

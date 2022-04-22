@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
 
-from bot_commands import DiscordUtils
-from bot_commands.DiscordUtils import EmbedColor
+from bot_commands import EmbedUtils
+from bot_commands.EmbedUtils import EmbedColor
 from data.bot_data import BotData
 
 
