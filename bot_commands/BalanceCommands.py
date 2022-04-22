@@ -70,7 +70,7 @@ class BalanceCommands(commands.Cog):
         ans = []
         for discord_id, balance in top_id_balances:
             member = id_to_guild_member[discord_id]
-            nickname = MemberCommands.to_nickname(member)
+            nickname = CommandUtils.to_nickname(member)
             result_str = f'{nickname} - {balance}'
             ans.append(result_str)
 
