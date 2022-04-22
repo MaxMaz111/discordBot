@@ -14,7 +14,7 @@ from data.guild_data import GuildData
 from utils import LogUtils
 
 discord_logger_format = '%(asctime)s:%(levelname)s:%(name)s: %(message)s'
-LogUtils.init_discord_logger(format=discord_logger_format)
+LogUtils.init_discord_logger(fmt=discord_logger_format)
 
 intents = discord.Intents.default()
 intents.members = True
