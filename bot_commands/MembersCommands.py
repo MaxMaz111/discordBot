@@ -33,10 +33,10 @@ class MemberCommands(commands.Cog):
 
     @commands.command()
     async def members_amount(self, ctx):
-        members = self.data.get_members(ctx=ctx)
-        guild_id = self.data.get_guild_id(ctx=ctx)
-        guild_name = self.data.guild_id_to_data[guild_id].get_guild().name
-        members_amount = len(members)
+        guild_data = self.data.get_guild_data(ctx=ctx)
+        guild_name = guild_data.get_guild().name
+        members_amount = len(guild_data.get_members())
+
         await DiscordUtils.show_embed(ctx=ctx,
                                       colour=EmbedColor.ALL_OK,
                                       description=f'Количество пользователей на сервере {guild_name} - {members_amount}'
