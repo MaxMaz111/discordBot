@@ -9,6 +9,7 @@ from discord.ext import commands
 import bot_commands.CommandUtils as CommandUtils
 from bot_commands import EmbedUtils
 from bot_commands.EmbedUtils import EmbedColor, ActionType
+from utils import ErrorUtils
 
 
 class MemberCommands(commands.Cog):
@@ -96,3 +97,16 @@ class MemberCommands(commands.Cog):
             .add_field(name=f'Роли({len(user_name_roles)})', value=",".join(user_name_roles), inline=True) \
 
         await EmbedUtils.show_embed(ctx=ctx, embed=embed)
+
+    @profile.error
+    async def profile_error(self,
+                            ctx: Context,
+                            error: Exception
+                            ):
+        await ErrorUtils.process_error(
+            ctx=ctx,
+            error=error,
+            title_prefix='Не удалось обработать запрос',
+            with_details=False,
+            description='При запросе профиля другого пользователя укажите его id или линк',
+        )
