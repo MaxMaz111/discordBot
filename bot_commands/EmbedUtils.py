@@ -3,6 +3,8 @@ from enum import Enum, auto
 import discord
 from discord import Member
 from discord.embeds import EmptyEmbed, Embed
+from discord.ext.commands import Context
+
 import bot_commands.CommandUtils as CommandUtils
 
 
@@ -25,7 +27,7 @@ class RuLocalization:
     }
 
 
-def create_command_embed(ctx=None,
+def create_command_embed(ctx: Context = None,
                          colour: EmbedColor = EmbedColor.SUCCESS,
                          description: str = EmptyEmbed,
                          title: str = EmptyEmbed,
@@ -43,7 +45,7 @@ def create_command_embed(ctx=None,
     return embed
 
 
-async def show_embed(ctx,
+async def show_embed(ctx: Context,
                      embed: Embed = None,
                      **kwargs
                      ):
