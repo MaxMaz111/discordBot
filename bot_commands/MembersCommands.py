@@ -50,7 +50,7 @@ class MemberCommands(commands.Cog):
         else:
             discord_id = CommandUtils.get_mentioned_id(ctx=ctx, mentioned_id_argument=discord_id)
 
-        user = self.data.get_member(discord_id=discord_id)
+        user = self.data.get_member(discord_id=discord_id, ctx=ctx)
         if not user:
             await DiscordUtils.show_embed(ctx=ctx,
                                           colour=EmbedColor.ERROR,
