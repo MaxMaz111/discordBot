@@ -1,7 +1,13 @@
+from enum import Enum
+
 import sqlalchemy
 from sqlalchemy import orm, UniqueConstraint
 
 from data.db_session import SqlAlchemyBase
+
+
+class StatisticType(Enum):
+    BOT_COMMANDS_AMOUNT = 'bot_commands_amount'
 
 
 class Statistics(SqlAlchemyBase):
