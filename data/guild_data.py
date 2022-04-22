@@ -1,4 +1,7 @@
+from typing import Optional
+
 import discord
+from discord import Member
 
 
 class GuildData:
@@ -20,10 +23,9 @@ class GuildData:
             self.members = list(filter(lambda x: not x.bot, members))
         return self.members
 
-    def get_member_with_id(self, id):
-        if self.members is None:
-            self.get_members()
-        member = list(filter(lambda x: x.id == id, self.members))
-        return member
+    def get_member(self, discord_id: int) -> Optional[Member]:
+        members = self.get_members()
+        member = list(filter(lambda x: x.id == discord_id, members))
+        return member[0] if len(member) > 0 else None
 
 

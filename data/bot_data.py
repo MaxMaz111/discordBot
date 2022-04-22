@@ -1,4 +1,6 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
+
+from discord import Member
 
 from data.db_data import DbData
 from data.guild_data import GuildData
@@ -24,9 +26,15 @@ class BotData:
             discord_id = ctx.message.author.id
         return discord_id
 
-    def get_members(self, guild_id: int = None, ctx=None):
+    def get_guild_data(self, guild_id: int = None, ctx=None) -> Optional[GuildData]:
         guild_id = BotData.get_guild_id(guild_id=guild_id, ctx=ctx)
-        return self.guild_id_to_data[guild_id].get_members()
+        return self.guild_id_to_data[guild_id]
+
+    def get_members(self, guild_id: int = None, ctx=None):
+        return self.get_guild_data(guild_id=guild_id, ctx=ctx).get_members()
+
+    def get_member(self, discord_id: int, guild_id: int = None, ctx=None) -> Optional[Member]:
+        return self.get_guild_data(guild_id=guild_id, ctx=ctx).get_member(discord_id=discord_id)
 
     def get_user(self,
                  ctx=None,

@@ -1,6 +1,6 @@
-def get_mentioned_id(ctx, recipient_id_argument):
-    recipient_id = ctx.message.mentions[0].id if ctx.message.mentions else recipient_id_argument
-    return int(recipient_id)
+def get_mentioned_id(ctx, mentioned_id_argument):
+    mentioned_id = ctx.message.mentions[0].id if ctx.message.mentions else mentioned_id_argument
+    return int(mentioned_id)
 
 
 def get_author(ctx):
