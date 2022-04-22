@@ -63,7 +63,7 @@ class TimeCommands(commands.Cog):
             return TimeCommands.format_date(date), EmbedColor.SUCCESS
 
         title, color = try_calculate(zone_argument=city_or_timezone_or_gmt)
-        await DiscordUtils.show_embed(
+        await EmbedUtils.show_embed(
             ctx=ctx,
             title=title,
             colour=color,

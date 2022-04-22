@@ -37,7 +37,7 @@ class MemberCommands(commands.Cog):
         guild_name = guild_data.get_guild().name
         members_amount = len(guild_data.get_members())
 
-        await DiscordUtils.show_embed(ctx=ctx,
+        await EmbedUtils.show_embed(ctx=ctx,
                                       colour=EmbedColor.ALL_OK,
                                       description=f'Количество пользователей на сервере {guild_name} - {members_amount}'
                                       )
@@ -52,7 +52,7 @@ class MemberCommands(commands.Cog):
 
         user = self.data.get_member(discord_id=discord_id, ctx=ctx)
         if not user:
-            await DiscordUtils.show_embed(ctx=ctx,
+            await EmbedUtils.show_embed(ctx=ctx,
                                           colour=EmbedColor.ERROR,
                                           title='Пользователя с таким ID или никнеймом нет на сервере'
                                           )

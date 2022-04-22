@@ -40,13 +40,13 @@ class BalanceCommands(commands.Cog):
                 sender=sender,
                 recipient=recipient,
                 amount=amount,
-                sender_money=sender_money
+                sender_money=sender_money,
             )
 
             return f'Вы передали {amount} :coin: пользователю <@{recipient_id}>', EmbedColor.SUCCESS
 
         description, colour = try_give()
-        await DiscordUtils.show_embed(
+        await EmbedUtils.show_embed(
             ctx=ctx,
             colour=colour,
             description=description,
@@ -57,7 +57,7 @@ class BalanceCommands(commands.Cog):
         print(error.args)
 
         if isinstance(error, discord.ext.commands.CommandError):
-            await DiscordUtils.show_embed(
+            await EmbedUtils.show_embed(
                 ctx=ctx,
                 colour=EmbedColor.ERROR,
                 title='Не удалось передать монетки',
@@ -69,9 +69,10 @@ class BalanceCommands(commands.Cog):
     async def balance(self, ctx):
         money = self.bot_data.get_money(ctx)
         money_amount = money.balance
-        await DiscordUtils.show_embed(ctx=ctx,
-                                      colour=EmbedColor.SUCCESS,
-                                      description=f'На вашем балансе {money_amount} :coin:')
+        await EmbedUtils.show_embed(ctx=ctx,
+                                    colour=EmbedColor.SUCCESS,
+                                    description=f'На вашем балансе {money_amount} :coin:',
+                                    )
 
     @commands.command()
     async def top_balances(self, ctx):
@@ -91,8 +92,8 @@ class BalanceCommands(commands.Cog):
 
         msg = 'Топ пользователей сервера по балансу:\n'
         msg += '\n'.join(ans)
-        await DiscordUtils.show_embed(ctx=ctx,
-                                      colour=EmbedColor.ALL_OK,
-                                      title='Топ пользователей сервера по балансу',
-                                      description='\n'.join(ans)
-                                      )
+        await EmbedUtils.show_embed(ctx=ctx,
+                                    colour=EmbedColor.ALL_OK,
+                                    title='Топ пользователей сервера по балансу',
+                                    description='\n'.join(ans),
+                                    )

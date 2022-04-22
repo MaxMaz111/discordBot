@@ -16,7 +16,7 @@ class DailyRewardCommands(commands.Cog):
     async def reward(self, ctx):
         self.bot_data.update_money(ctx=ctx, delta=self.daily_reward)
 
-        await DiscordUtils.show_embed(
+        await EmbedUtils.show_embed(
             ctx=ctx,
             title=f"Вы успешно получили свою награду - {self.daily_reward} :coin:",
             colour=EmbedColor.SUCCESS,
@@ -26,7 +26,7 @@ class DailyRewardCommands(commands.Cog):
     async def reward_error(self, ctx, error):
         print(error.args)
         if isinstance(error, discord.ext.commands.CommandOnCooldown):
-            await DiscordUtils.show_embed(
+            await EmbedUtils.show_embed(
                 ctx=ctx,
                 title=f'Вы уже получали свою награду, приходите позже.',
                 colour=EmbedColor.ERROR,
