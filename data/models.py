@@ -13,7 +13,7 @@ class StatisticType(Enum):
 class Statistics(SqlAlchemyBase):
     __tablename__ = 'statistics'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    name = sqlalchemy.Column(sqlalchemy.Integer, unique=True)
+    name = sqlalchemy.Column(sqlalchemy.String, unique=True)
 
 
 class UserStatistics(SqlAlchemyBase):
