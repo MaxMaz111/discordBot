@@ -68,7 +68,10 @@ class BalanceCommands(commands.Cog):
     @commands.command()
     async def balance(self, ctx):
         money = self.bot_data.get_money(ctx)
-        await ctx.send(f'На вашем балансе {money.balance} монет')
+        money_amount = money.balance
+        await DiscordUtils.show_embed(ctx=ctx,
+                                      colour=EmbedColor.SUCCESS,
+                                      description=f'На вашем балансе {money_amount} :coin:')
 
     @commands.command()
     async def top_balances(self, ctx):
@@ -83,9 +86,13 @@ class BalanceCommands(commands.Cog):
         for discord_id, balance in top_id_balances:
             member = id_to_guild_member[discord_id]
             nickname = CommandUtils.to_nickname(member)
-            result_str = f'{nickname} - {balance}'
+            result_str = f'{nickname} - {balance} :coin:'
             ans.append(result_str)
 
         msg = 'Топ пользователей сервера по балансу:\n'
         msg += '\n'.join(ans)
-        await ctx.send(msg)
+        await DiscordUtils.show_embed(ctx=ctx,
+                                      colour=EmbedColor.ALL_OK,
+                                      title='Топ пользователей сервера по балансу',
+                                      description='\n'.join(ans)
+                                      )
