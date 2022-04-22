@@ -25,7 +25,7 @@ class RuLocalization:
     }
 
 
-def create_command_embed(ctx,
+def create_command_embed(ctx=None,
                          colour: EmbedColor = EmbedColor.SUCCESS,
                          description: str = EmptyEmbed,
                          title: str = EmptyEmbed,
