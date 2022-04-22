@@ -59,13 +59,14 @@ class MemberCommands(commands.Cog):
         author_nick = CommandUtils.to_nickname(ctx.author)
         author_img_url = ctx.author.avatar_url
 
-        embed = discord.Embed(title=f'Информация о {user_nick}')
-        embed.set_thumbnail(url=user_img_url)
-        embed.add_field(name='Полное имя', value=user_nick)
-        embed.add_field(name='ID пользователя', value=user.id, inline=True)
-        embed.add_field(name='Присоединился к серверу', value=joined_at, inline=True)
-        embed.add_field(name='Аккаунт создан', value=created_at)
-        embed.add_field(name=f'Роли({len(user_name_roles)})', value=",".join(user_name_roles), inline=True)
-        embed.set_footer(text=f'Запросил(а) {author_nick}', icon_url=author_img_url)
+        embed = discord.Embed(title=f'Информация о {user_nick}')\
+            .set_thumbnail(url=user_img_url)\
+            .add_field(name='Полное имя', value=user_nick)\
+            .add_field(name='ID пользователя', value=user.id, inline=True)\
+            .add_field(name='Присоединился к серверу', value=joined_at, inline=True)\
+            .add_field(name='Аккаунт создан', value=created_at)\
+            .add_field(name=f'Роли({len(user_name_roles)})', value=",".join(user_name_roles), inline=True)\
+            .set_footer(text=f'Запросил(а) {author_nick}', icon_url=author_img_url)
+
         await ctx.send(embed=embed)
 
