@@ -5,8 +5,8 @@ import discord
 from data.bot_data import BotData
 from discord.ext import commands
 import bot_commands.CommandUtils as CommandUtils
-from bot_commands import DiscordUtils
-from bot_commands.DiscordUtils import EmbedColor
+from bot_commands import EmbedUtils
+from bot_commands.EmbedUtils import EmbedColor, ActionType
 
 
 class MemberCommands(commands.Cog):
@@ -37,10 +37,11 @@ class MemberCommands(commands.Cog):
         guild_name = guild_data.get_guild().name
         members_amount = len(guild_data.get_members())
 
-        await DiscordUtils.show_embed(ctx=ctx,
-                                      colour=EmbedColor.ALL_OK,
-                                      description=f'Количество пользователей на сервере {guild_name} - {members_amount}'
-                                      )
+        await EmbedUtils.show_embed(ctx=ctx,
+                                    colour=EmbedColor.ALL_OK,
+                                    description=f'Количество пользователей на сервере {guild_name} - {members_amount}',
+                                    action_type=ActionType.ASKED,
+                                    )
 
     @commands.command()
     async def profile(self, ctx, discord_id=None):
@@ -52,10 +53,11 @@ class MemberCommands(commands.Cog):
 
         user = self.data.get_member(discord_id=discord_id, ctx=ctx)
         if not user:
-            await DiscordUtils.show_embed(ctx=ctx,
-                                          colour=EmbedColor.ERROR,
-                                          title='Пользователя с таким ID или никнеймом нет на сервере'
-                                          )
+            await EmbedUtils.show_embed(ctx=ctx,
+                                        colour=EmbedColor.ERROR,
+                                        title='Пользователя с таким ID или никнеймом нет на сервере',
+                                        action_type=ActionType.ASKED,
+                                        )
             return
 
         date_format = "%d.%m.%y"
@@ -65,17 +67,18 @@ class MemberCommands(commands.Cog):
         user_roles = filter(lambda x: x.name != '@everyone', user.roles)
         user_name_roles = list(map(lambda x: f'`{x.name}`', user_roles))
         user_img_url = user.avatar_url
-        author_nick = CommandUtils.to_nickname(ctx.author)
-        author_img_url = ctx.author.avatar_url
 
-        embed = discord.Embed(title=f'Информация о {user_nick}')\
-            .set_thumbnail(url=user_img_url)\
-            .add_field(name='Полное имя', value=user_nick)\
-            .add_field(name='ID пользователя', value=user.id, inline=True)\
-            .add_field(name='Присоединился к серверу', value=joined_at, inline=True)\
-            .add_field(name='Аккаунт создан', value=created_at)\
-            .add_field(name=f'Роли({len(user_name_roles)})', value=",".join(user_name_roles), inline=True)\
-            .set_footer(text=f'Запросил(а) {author_nick}', icon_url=author_img_url)
+        embed = EmbedUtils.create_command_embed(
+            ctx=ctx,
+            title=f'Информация о {user_nick}',
+            action_type=ActionType.ASKED,
+        )
 
-        await ctx.send(embed=embed)
+        embed.set_thumbnail(url=user_img_url) \
+            .add_field(name='Полное имя', value=user_nick) \
+            .add_field(name='ID пользователя', value=user.id, inline=True) \
+            .add_field(name='Присоединился к серверу', value=joined_at, inline=True) \
+            .add_field(name='Аккаунт создан', value=created_at) \
+            .add_field(name=f'Роли({len(user_name_roles)})', value=",".join(user_name_roles), inline=True) \
 
+        await EmbedUtils.show_embed(ctx=ctx, embed=embed)

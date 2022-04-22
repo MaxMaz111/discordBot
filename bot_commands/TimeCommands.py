@@ -5,8 +5,8 @@ from typing import Tuple, Optional
 import pytz
 from discord.ext import commands
 
-from bot_commands import DiscordUtils
-from bot_commands.DiscordUtils import EmbedColor
+from bot_commands import EmbedUtils
+from bot_commands.EmbedUtils import EmbedColor, ActionType
 
 
 class TimeCommands(commands.Cog):
@@ -63,8 +63,9 @@ class TimeCommands(commands.Cog):
             return TimeCommands.format_date(date), EmbedColor.SUCCESS
 
         title, color = try_calculate(zone_argument=city_or_timezone_or_gmt)
-        await DiscordUtils.show_embed(
+        await EmbedUtils.show_embed(
             ctx=ctx,
             title=title,
             colour=color,
+            action_type=ActionType.ASKED,
         )
