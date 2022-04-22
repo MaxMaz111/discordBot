@@ -32,6 +32,17 @@ class MemberCommands(commands.Cog):
         await ctx.send(nickname_str)
 
     @commands.command()
+    async def members_amount(self, ctx):
+        members = self.data.get_members(ctx=ctx)
+        guild_id = self.data.get_guild_id(ctx=ctx)
+        guild_name = self.data.guild_id_to_data[guild_id].get_guild().name
+        members_amount = len(members)
+        await DiscordUtils.show_embed(ctx=ctx,
+                                      colour=EmbedColor.ALL_OK,
+                                      description=f'Количество пользователей на сервере {guild_name} - {members_amount}'
+                                      )
+
+    @commands.command()
     async def profile(self, ctx, id=None):
         date_format = "%d.%m.%y"
         if id is None:
