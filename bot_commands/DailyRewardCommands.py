@@ -1,11 +1,10 @@
-import discord
 from discord.ext import commands
 from discord.ext.commands import Context
 
 from bot_commands import EmbedUtils
 from bot_commands.EmbedUtils import EmbedColor, ActionType
 from data.bot_data import BotData
-from utils import LogUtils
+from utils import ErrorUtils
 
 
 class DailyRewardCommands(commands.Cog):
@@ -35,12 +34,9 @@ class DailyRewardCommands(commands.Cog):
                            ctx: Context,
                            error: Exception,
                            ):
-        LogUtils.get_bot_logger().error(msg=str(error))
-
-        if isinstance(error, discord.ext.commands.CommandOnCooldown):
-            await EmbedUtils.show_embed(
-                ctx=ctx,
-                title=f'Вы уже получали свою награду, приходите позже.',
-                colour=EmbedColor.ERROR,
-                action_type=ActionType.ASKED,
-            )
+        await ErrorUtils.process_error(
+            ctx=ctx,
+            error=error,
+            title_prefix='Вы уже получали свою награду, приходите позже.',
+            with_details=False,
+        )

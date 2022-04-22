@@ -1,15 +1,14 @@
-from typing import Tuple
-
-import discord
+from discord.ext import commands
 from discord.ext import commands
 from discord.ext.commands import Context
 
+import bot_commands.CommandUtils as CommandUtils
 from bot_commands import EmbedUtils
+from bot_commands.BotException import BotException
 from bot_commands.EmbedUtils import EmbedColor, ActionType
 from bot_commands.MembersCommands import MemberCommands
 from data.bot_data import BotData
-import bot_commands.CommandUtils as CommandUtils
-from utils import LogUtils
+from utils import ErrorUtils
 
 
 class BalanceCommands(commands.Cog):
@@ -31,33 +30,30 @@ class BalanceCommands(commands.Cog):
 
         recipient_id = CommandUtils.get_mentioned_id(ctx=ctx, mentioned_id_argument=recipient_id)
 
-        def try_give() -> Tuple[str, EmbedColor]:
-            members = self.bot_data.get_members(ctx=ctx)
-            member_ids = MemberCommands.to_ids(members)
-            if recipient_id not in member_ids:
-                return f'<@{recipient_id}> нет на сервере.\n\nНе удастся передать монетки', EmbedColor.PROBLEM_OCCURRED
+        members = self.bot_data.get_members(ctx=ctx)
+        member_ids = MemberCommands.to_ids(members)
 
-            if recipient_id == sender_id:
-                return f'Нельзя передать монетки самому себе', EmbedColor.PROBLEM_OCCURRED
+        if recipient_id not in member_ids:
+            raise BotException(message=f'<@{recipient_id}> нет на сервере.\n\nНе удастся передать монетки')
 
-            sender_money = self.bot_data.get_money(ctx=ctx)
-            if sender_money.balance < amount:
-                return f'У вас недостаточно средств', EmbedColor.PROBLEM_OCCURRED
+        if recipient_id == sender_id:
+            raise BotException(message=f'Нельзя передать монетки самому себе')
 
-            self.bot_data.send_money(
-                ctx=ctx,
-                sender_money=sender_money,
-                recipient_id=recipient_id,
-                amount=amount,
-            )
+        sender_money = self.bot_data.get_money(ctx=ctx)
+        if sender_money.balance < amount:
+            raise BotException(message=f'У вас недостаточно средств')
 
-            return f'Вы передали {amount} :coin: пользователю <@{recipient_id}>', EmbedColor.SUCCESS
+        self.bot_data.send_money(
+            ctx=ctx,
+            sender_money=sender_money,
+            recipient_id=recipient_id,
+            amount=amount,
+        )
 
-        description, colour = try_give()
         await EmbedUtils.show_embed(
             ctx=ctx,
-            colour=colour,
-            description=description,
+            colour=EmbedColor.SUCCESS,
+            description=f'Вы передали {amount} :coin: пользователю <@{recipient_id}>',
             action_type=ActionType.EXECUTED,
         )
 
@@ -66,17 +62,13 @@ class BalanceCommands(commands.Cog):
                          ctx: Context,
                          error: Exception,
                          ):
-        LogUtils.get_bot_logger().error(msg=str(error))
-
-        if isinstance(error, discord.ext.commands.CommandError):
-            await EmbedUtils.show_embed(
-                ctx=ctx,
-                colour=EmbedColor.ERROR,
-                title='Не удалось передать монетки',
-                description='Укажите человека, его id или линк, а затем количество монеток,'
-                            f' которое вы хотите передать',
-                action_type=ActionType.ASKED,
-            )
+        await ErrorUtils.process_error(
+            ctx=ctx,
+            error=error,
+            title_prefix='Не удалось передать монетки',
+            description='Укажите человека, его id или линк, а затем количество монеток,'
+                        f' которое вы хотите передать',
+        )
 
     @commands.command()
     async def balance(self,
