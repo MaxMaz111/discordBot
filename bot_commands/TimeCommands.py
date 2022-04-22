@@ -4,6 +4,7 @@ from typing import Tuple, Optional
 
 import pytz
 from discord.ext import commands
+from discord.ext.commands import Context
 
 from bot_commands import EmbedUtils
 from bot_commands.EmbedUtils import EmbedColor, ActionType
@@ -11,21 +12,21 @@ from bot_commands.EmbedUtils import EmbedColor, ActionType
 
 class TimeCommands(commands.Cog):
     @staticmethod
-    def format_date(date):
+    def format_date(date: datetime):
         return date.strftime("%A, %d. %B %Y %I:%M%p")
 
     @staticmethod
-    def find_timezone(zone_str):
+    def find_timezone(zone_str: str):
         zone_str = zone_str.strip().lower().replace('_', ' ')
 
-        def zone_filter(timezone):
+        def zone_filter(timezone: str):
             return zone_str in timezone.replace('_', ' ').lower().split('/')
 
         zones = list(filter(zone_filter, pytz.all_timezones))
         return pytz.timezone(zones[0]) if zones else None
 
     @staticmethod
-    def fix_gmt(zone_str):
+    def fix_gmt(zone_str: str):
         pattern = "GMT[\\+\\-][0-9]+"
         if re.match(pattern, zone_str):
             signs = ["+", "-"]
@@ -37,7 +38,10 @@ class TimeCommands(commands.Cog):
         return zone_str
 
     @commands.command()
-    async def time(self, ctx, city_or_timezone_or_gmt=None):
+    async def time(self,
+                   ctx: Context,
+                   city_or_timezone_or_gmt: str = None,
+                   ):
         def try_calculate(zone_argument) -> Tuple[str, EmbedColor]:
             def get_date(zone_str) -> Optional[datetime]:
                 if zone_str is None:

@@ -1,6 +1,8 @@
-from typing import Set
+from typing import Set, List
 
 import discord
+from discord import Member
+from discord.ext.commands import Context
 
 from data.bot_data import BotData
 from discord.ext import commands
@@ -10,29 +12,38 @@ from bot_commands.EmbedUtils import EmbedColor, ActionType
 
 
 class MemberCommands(commands.Cog):
-    def __init__(self, data: BotData):
+    def __init__(self,
+                 data: BotData,
+                 ):
         self.data = data
 
     @commands.Cog.listener()
-    async def on_member_join(self, member):
+    async def on_member_join(self,
+                             member: Member,
+                             ):
         await member.create_dm()
         await member.dm_channel.send(
             f'Привет, {member.name}!'
         )
 
     @staticmethod
-    def to_ids(members) -> Set[int]:
+    def to_ids(members: List[Member],
+               ) -> Set[int]:
         return set(map(lambda x: x.id, members))
 
     @commands.command()
-    async def members(self, ctx):
+    async def members(self,
+                      ctx: Context,
+                      ):
         members = self.data.get_members(ctx=ctx)
         nicknames = map(CommandUtils.to_nickname, members)
         nickname_str = '\n'.join(nicknames)
         await ctx.send(nickname_str)
 
     @commands.command()
-    async def members_amount(self, ctx):
+    async def members_amount(self,
+                             ctx: Context,
+                             ):
         guild_data = self.data.get_guild_data(ctx=ctx)
         guild_name = guild_data.get_guild().name
         members_amount = len(guild_data.get_members())
@@ -44,7 +55,10 @@ class MemberCommands(commands.Cog):
                                     )
 
     @commands.command()
-    async def profile(self, ctx, discord_id=None):
+    async def profile(self,
+                      ctx: Context,
+                      discord_id: str = None,
+                      ):
         if discord_id is None:
             author = CommandUtils.get_author(ctx)
             discord_id = int(author.id)

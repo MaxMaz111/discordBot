@@ -58,17 +58,10 @@ class DbData:
             .all()
 
     def send_money(self,
-                   sender: Users,
-                   recipient: Users,
-                   amount: int,
-                   sender_money: Money = None,
-                   recipient_money: Money = None):
-        if sender_money is None:
-            sender_money = self.get_money(sender)
-
-        if recipient_money is None:
-            recipient_money = self.get_money(recipient)
-
+                   sender_money: Money,
+                   recipient_money: Money,
+                   amount: int
+                   ):
         sender_money.balance -= amount
         recipient_money.balance += amount
 
