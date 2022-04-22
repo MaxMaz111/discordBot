@@ -13,8 +13,8 @@ from data.db_data import DbData
 from data.guild_data import GuildData
 from utils import LogUtils
 
-discord_logger_format = '%(asctime)s:%(levelname)s:%(name)s: %(message)s'
-LogUtils.init_discord_logger(fmt=discord_logger_format)
+LogUtils.init_logger('discord')
+LogUtils.init_logger(LogUtils.BOT_LOGGER_NAME)
 
 intents = discord.Intents.default()
 intents.members = True
