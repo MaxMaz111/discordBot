@@ -33,16 +33,13 @@ class MemberCommands(commands.Cog):
 
     @commands.command()
     async def profile(self, ctx, discord_id=None):
-        date_format = "%d.%m.%y"
         if discord_id is None:
-            sender = CommandUtils.get_author(ctx)
-            discord_id = int(sender.id)
+            author = CommandUtils.get_author(ctx)
+            discord_id = int(author.id)
         else:
             discord_id = CommandUtils.get_mentioned_id(ctx=ctx, recipient_id_argument=discord_id)
 
-        guild_id = self.data.get_guild_id(ctx=ctx)
-        guild_obj = self.data.guild_id_to_data[guild_id]
-        user = guild_obj.get_member(discord_id=discord_id)
+        user = self.data.get_member(discord_id=discord_id)
         if not user:
             await DiscordUtils.show_embed(ctx=ctx,
                                           colour=EmbedColor.ERROR,
@@ -50,6 +47,7 @@ class MemberCommands(commands.Cog):
                                           )
             return
 
+        date_format = "%d.%m.%y"
         user_nick = CommandUtils.to_nickname(user)
         joined_at = user.joined_at.strftime(date_format)
         created_at = user.created_at.strftime(date_format)
