@@ -6,12 +6,12 @@ from data.bot_data import BotData
 
 class StatisticCommands(commands.Cog):
     def __init__(self,
-                 data: BotData
+                 data: BotData,
                  ):
         self.bot_data = data
 
     @commands.command
     async def stats(self,
-                    ctx: Context
+                    ctx: Context,
                     ):
         pass

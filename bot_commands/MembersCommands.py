@@ -13,13 +13,13 @@ from bot_commands.EmbedUtils import EmbedColor, ActionType
 
 class MemberCommands(commands.Cog):
     def __init__(self,
-                 data: BotData
+                 data: BotData,
                  ):
         self.data = data
 
     @commands.Cog.listener()
     async def on_member_join(self,
-                             member: Member
+                             member: Member,
                              ):
         await member.create_dm()
         await member.dm_channel.send(
@@ -27,13 +27,13 @@ class MemberCommands(commands.Cog):
         )
 
     @staticmethod
-    def to_ids(members: List[Member]
+    def to_ids(members: List[Member],
                ) -> Set[int]:
         return set(map(lambda x: x.id, members))
 
     @commands.command()
     async def members(self,
-                      ctx: Context
+                      ctx: Context,
                       ):
         members = self.data.get_members(ctx=ctx)
         nicknames = map(CommandUtils.to_nickname, members)
@@ -42,7 +42,7 @@ class MemberCommands(commands.Cog):
 
     @commands.command()
     async def members_amount(self,
-                             ctx: Context
+                             ctx: Context,
                              ):
         guild_data = self.data.get_guild_data(ctx=ctx)
         guild_name = guild_data.get_guild().name
@@ -57,7 +57,8 @@ class MemberCommands(commands.Cog):
     @commands.command()
     async def profile(self,
                       ctx: Context,
-                      discord_id: str = None):
+                      discord_id: str = None,
+                      ):
         if discord_id is None:
             author = CommandUtils.get_author(ctx)
             discord_id = int(author.id)

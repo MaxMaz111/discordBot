@@ -10,7 +10,7 @@ from data.bot_data import BotData
 class DailyRewardCommands(commands.Cog):
     def __init__(self,
                  bot_data: BotData,
-                 daily_reward: int
+                 daily_reward: int,
                  ):
         self.bot_data = bot_data
         self.daily_reward = daily_reward
@@ -18,7 +18,7 @@ class DailyRewardCommands(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 60 * 60 * 24, commands.BucketType.user)
     async def reward(self,
-                     ctx: Context
+                     ctx: Context,
                      ):
         self.bot_data.update_money(ctx=ctx, delta=self.daily_reward)
 
@@ -32,7 +32,7 @@ class DailyRewardCommands(commands.Cog):
     @reward.error
     async def reward_error(self,
                            ctx: Context,
-                           error: Exception
+                           error: Exception,
                            ):
         print(error.args)
         if isinstance(error, discord.ext.commands.CommandOnCooldown):
