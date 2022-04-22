@@ -26,7 +26,11 @@ guilds = [
     GuildData(bot=bot, guild_id=guild_id)
 ]
 
-db_name = 'db/accounts.db'
+db_directory = 'db'
+if not os.path.exists(db_directory):
+    os.makedirs(db_directory)
+
+db_name = f'{db_directory}/accounts.db'
 db = DbData(db_name=db_name)
 
 bot_data = BotData(guilds=guilds, db=db)
