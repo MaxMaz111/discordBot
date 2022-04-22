@@ -1,4 +1,3 @@
-import logging
 import os
 
 import discord
@@ -12,12 +11,10 @@ from bot_commands.TimeCommands import TimeCommands
 from data.bot_data import BotData
 from data.db_data import DbData
 from data.guild_data import GuildData
+from utils import LogUtils
 
-logger = logging.getLogger('discord')
-logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-logger.addHandler(handler)
+LogUtils.init_logger('discord')
+LogUtils.init_logger(LogUtils.BOT_LOGGER_NAME)
 
 intents = discord.Intents.default()
 intents.members = True
@@ -38,7 +35,7 @@ load_dotenv()
 
 @bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(bot))
+    LogUtils.get_bot_logger().info(msg='We have logged in as {0.user}'.format(bot))
 
 daily_reward = 20
 bot.add_cog(DailyRewardCommands(bot_data=bot_data, daily_reward=daily_reward))

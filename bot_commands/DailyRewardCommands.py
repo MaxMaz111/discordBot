@@ -5,6 +5,7 @@ from discord.ext.commands import Context
 from bot_commands import EmbedUtils
 from bot_commands.EmbedUtils import EmbedColor, ActionType
 from data.bot_data import BotData
+from utils import LogUtils
 
 
 class DailyRewardCommands(commands.Cog):
@@ -34,7 +35,8 @@ class DailyRewardCommands(commands.Cog):
                            ctx: Context,
                            error: Exception,
                            ):
-        print(error.args)
+        LogUtils.get_bot_logger().error(msg=str(error))
+
         if isinstance(error, discord.ext.commands.CommandOnCooldown):
             await EmbedUtils.show_embed(
                 ctx=ctx,
