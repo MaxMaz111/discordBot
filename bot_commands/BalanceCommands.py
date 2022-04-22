@@ -3,10 +3,11 @@ from typing import Tuple
 import discord
 from discord.ext import commands
 
-from commands import DiscordUtils
-from commands.DiscordUtils import EmbedColor
-from commands.MembersCommands import MemberCommands
+from bot_commands import DiscordUtils
+from bot_commands.DiscordUtils import EmbedColor
+from bot_commands.MembersCommands import MemberCommands
 from data.bot_data import BotData
+import bot_commands.CommandUtils as CommandUtils
 
 
 class BalanceCommands(commands.Cog):
@@ -14,21 +15,12 @@ class BalanceCommands(commands.Cog):
         self.bot_data = data
         self.top_limit = top_limit
 
-    @staticmethod
-    def get_recipient_id(ctx, recipient_id_argument):
-        recipient_id = ctx.message.mentions[0].id if ctx.message.mentions else recipient_id_argument
-        return int(recipient_id)
-
-    @staticmethod
-    def get_sender(ctx):
-        return ctx.message.author
-
     @commands.command()
     async def give(self, ctx, recipient_id, amount: int):
-        sender = BalanceCommands.get_sender(ctx)
+        sender = CommandUtils.get_author(ctx)
         sender_id = int(sender.id)
 
-        recipient_id = BalanceCommands.get_recipient_id(ctx=ctx, recipient_id_argument=recipient_id)
+        recipient_id = CommandUtils.get_mentioned_id(ctx=ctx, recipient_id_argument=recipient_id)
 
         def try_give() -> Tuple[str, EmbedColor]:
             members = self.bot_data.get_members(ctx=ctx)

@@ -2,6 +2,7 @@ from enum import Enum
 
 import discord
 from discord.embeds import EmptyEmbed
+import bot_commands.CommandUtils as CommandUtils
 
 
 class EmbedColor(Enum):
@@ -20,5 +21,5 @@ async def show_embed(ctx,
         author = ctx.message.author
 
     embed = discord.Embed(colour=colour.value, description=description, title=title)
-    embed.set_author(name=author.name, icon_url=author.avatar_url)
+    embed.set_footer(text=f'Выполнил(а) {CommandUtils.to_nickname(author)}', icon_url=author.avatar_url, )
     await ctx.send(embed=embed)

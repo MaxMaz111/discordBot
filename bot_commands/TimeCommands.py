@@ -5,8 +5,8 @@ from typing import Tuple, Optional
 import pytz
 from discord.ext import commands
 
-from commands import DiscordUtils
-from commands.DiscordUtils import EmbedColor
+from bot_commands import DiscordUtils
+from bot_commands.DiscordUtils import EmbedColor
 
 
 class TimeCommands(commands.Cog):
