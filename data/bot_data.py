@@ -64,9 +64,10 @@ class BotData:
         return self.db.get_user(discord_id=discord_id, guild_id=guild_id)
 
     def get_money(self,
-                  ctx: Context,
+                  discord_id: int = None,
+                  ctx: Context = None,
                   ) -> Money:
-        user = self.get_user(ctx=ctx)
+        user = self.get_user(ctx=ctx, discord_id=discord_id)
         return self.db.get_money(user=user)
 
     def update_money(self,
@@ -96,14 +97,14 @@ class BotData:
         )
 
     def send_money(self,
-                   sender: Users,
-                   recipient: Users,
+                   ctx: Context,
+                   sender_money: Money,
+                   recipient_id: int,
                    amount: int,
-                   sender_money: Money = None,
                    ):
+        recipient_money = self.get_money(discord_id=recipient_id, ctx=ctx)
         self.db.send_money(
-            sender=sender,
-            recipient=recipient,
+            sender_money=sender_money,
+            recipient_money=recipient_money,
             amount=amount,
-            sender_money=sender_money
         )

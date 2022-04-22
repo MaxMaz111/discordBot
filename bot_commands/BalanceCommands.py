@@ -2,6 +2,7 @@ from typing import Tuple
 
 import discord
 from discord.ext import commands
+from discord.ext.commands import Context
 
 from bot_commands import EmbedUtils
 from bot_commands.EmbedUtils import EmbedColor, ActionType
@@ -11,12 +12,19 @@ import bot_commands.CommandUtils as CommandUtils
 
 
 class BalanceCommands(commands.Cog):
-    def __init__(self, data: BotData, top_limit: int):
+    def __init__(self,
+                 data: BotData,
+                 top_limit: int,
+                 ):
         self.bot_data = data
         self.top_limit = top_limit
 
     @commands.command()
-    async def give(self, ctx, recipient_id, amount: int):
+    async def give(self,
+                   ctx: Context,
+                   recipient_id: str,
+                   amount: int,
+                   ):
         sender = CommandUtils.get_author(ctx)
         sender_id = int(sender.id)
 
@@ -31,16 +39,15 @@ class BalanceCommands(commands.Cog):
             if recipient_id == sender_id:
                 return f'Нельзя передать монетки самому себе', EmbedColor.PROBLEM_OCCURRED
 
-            sender_money = self.bot_data.get_money(ctx)
+            sender_money = self.bot_data.get_money(ctx=ctx)
             if sender_money.balance < amount:
                 return f'У вас недостаточно средств', EmbedColor.PROBLEM_OCCURRED
 
-            recipient = self.bot_data.get_user(discord_id=recipient_id, guild_id=ctx.guild.id)
             self.bot_data.send_money(
-                sender=sender,
-                recipient=recipient,
-                amount=amount,
+                ctx=ctx,
                 sender_money=sender_money,
+                recipient_id=recipient_id,
+                amount=amount,
             )
 
             return f'Вы передали {amount} :coin: пользователю <@{recipient_id}>', EmbedColor.SUCCESS
@@ -54,7 +61,10 @@ class BalanceCommands(commands.Cog):
         )
 
     @give.error
-    async def give_error(self, ctx, error):
+    async def give_error(self,
+                         ctx: Context,
+                         error: Exception,
+                         ):
         print(error.args)
 
         if isinstance(error, discord.ext.commands.CommandError):
@@ -68,8 +78,10 @@ class BalanceCommands(commands.Cog):
             )
 
     @commands.command()
-    async def balance(self, ctx):
-        money = self.bot_data.get_money(ctx)
+    async def balance(self,
+                      ctx: Context,
+                      ):
+        money = self.bot_data.get_money(ctx=ctx)
         money_amount = money.balance
         await EmbedUtils.show_embed(ctx=ctx,
                                     colour=EmbedColor.SUCCESS,
@@ -78,7 +90,9 @@ class BalanceCommands(commands.Cog):
                                     )
 
     @commands.command()
-    async def top_balances(self, ctx):
+    async def top_balances(self,
+                           ctx: Context
+                           ):
         top_id_balances = self.bot_data.top_users_by_money(ctx=ctx, limit=self.top_limit)
 
         guild_members = self.bot_data.get_members(ctx=ctx)
