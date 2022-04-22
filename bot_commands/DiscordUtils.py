@@ -9,6 +9,7 @@ class EmbedColor(Enum):
     SUCCESS = 0x78ccf0
     PROBLEM_OCCURRED = 0x778899
     ERROR = 0xff2e2e
+    ALL_OK = 0x4d4d4d
 
 
 async def show_embed(ctx,
