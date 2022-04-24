@@ -16,7 +16,7 @@ class DailyRewardCommands(commands.Cog):
         self.daily_reward = daily_reward
 
     @commands.command()
-    @commands.cooldown(1, 60 * 60 * 24, commands.BucketType.user)
+    @commands.cooldown(1, 60 * 60 * 24, commands.BucketType.guild)
     async def reward(self,
                      ctx: Context,
                      ):
