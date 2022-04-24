@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 from bot_commands.BalanceCommands import BalanceCommands
 from bot_commands.DailyRewardCommands import DailyRewardCommands
+from bot_commands.ImageCommands import ImageCommands
 from bot_commands.MembersCommands import MemberCommands
 from bot_commands.TimeCommands import TimeCommands
 from data.bot_data import BotData
@@ -44,6 +45,7 @@ async def on_ready():
 daily_reward = 20
 bot.add_cog(DailyRewardCommands(bot_data=bot_data, daily_reward=daily_reward))
 bot.add_cog(TimeCommands())
+bot.add_cog(ImageCommands(data=bot_data))
 
 top_limit = 10
 bot.add_cog(BalanceCommands(data=bot_data, top_limit=top_limit))
