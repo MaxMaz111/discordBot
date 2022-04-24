@@ -109,7 +109,7 @@ class BotData:
             amount=amount,
         )
 
-    def get_market_role_to_cost(self,
-                                ctx: Context
-                                ) -> Dict[Role, int]:
-        return self.get_guild_data(ctx=ctx).get_market_role_to_cost()
+    def get_market_role_costs(self,
+                              ctx: Context
+                              ) -> List[Tuple[Role, int]]:
+        return self.get_guild_data(ctx=ctx).get_market_role_costs()

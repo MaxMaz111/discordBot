@@ -1,9 +1,11 @@
-from typing import Tuple
 from discord.ext import commands
-from bot_commands.EmbedUtils import EmbedColor, ActionType
 from discord.ext.commands import Context
-from bot_commands import EmbedUtils
+
+from bot_commands import EmbedUtils, CommandUtils
+from bot_commands.BotException import BotException
+from bot_commands.EmbedUtils import EmbedColor, ActionType
 from data.bot_data import BotData
+from utils import ErrorUtils
 
 
 class MarketCommands(commands.Cog):
@@ -14,7 +16,7 @@ class MarketCommands(commands.Cog):
     @commands.command()
     async def market(self,
                      ctx: Context):
-        role_to_cost = self.data.get_market_role_to_cost(ctx=ctx)
+        role_costs = self.data.get_market_role_costs(ctx=ctx)
 
         def role_to_str(index_role_cost):
             index, role_cost = index_role_cost
@@ -22,7 +24,7 @@ class MarketCommands(commands.Cog):
             return f'{index + 1} - ``@{role}``: {cost} :coin:'
 
         roles_str = '\n'.join(
-            map(role_to_str, enumerate(role_to_cost.items()))
+            map(role_to_str, enumerate(role_costs))
         )
 
         await EmbedUtils.show_embed(
@@ -34,34 +36,36 @@ class MarketCommands(commands.Cog):
         )
 
     @commands.command()
-    async def buy(self, ctx, n: int):
-        self.roles_id = self.get_roles_id(ctx)
-        author = ctx.message.author
-        self.role_price = self.get_role_price(ctx=ctx)
+    async def buy(self,
+                  ctx: Context,
+                  role_index: int):
+        role_index -= 1  # 0-indexation
 
-        async def try_buy() -> Tuple[str, EmbedColor]:
-            if n < 0 or n > len(self.roles_id):
-                return f'Не удается купить роль, укажите ее номер верно', EmbedColor.ERROR
+        role_costs = self.data.get_market_role_costs(ctx=ctx)
+        roles_count = len(role_costs)
 
-            money = self.data.get_money(ctx=ctx).balance
+        if role_index not in range(roles_count):
+            raise BotException(message=f'Ожидается номер роли от 1 до {roles_count}, но получен {role_index + 1}')
 
-            if money < self.role_price:
-                return f'Не удалось купить роль. На счете недостаточно средств', EmbedColor.ERROR
+        role, cost = role_costs[role_index]
 
-            if self.roles_id[n-1] in list(map(lambda x: x.id, author.roles)):
-                return f'Не удалось купить роль. Вы уже приобрели', EmbedColor.ERROR
-            self.data.update_money(delta=-self.role_price, user=author, ctx=ctx)
-            role = ctx.guild.get_role(self.roles_id[n-1])
-            await author.add_roles(role)
+        author = CommandUtils.get_author(ctx=ctx)
 
-            return f'Вы приобрели роль ``@{role}``', EmbedColor.SUCCESS
+        if role in author.roles:
+            raise BotException(message=f'У вас уже есть роль {role.name}')
 
-        description, colour = await try_buy()
+        balance = self.data.get_money(ctx=ctx).balance
+        if balance < cost:
+            raise BotException(message=f'На счете недостаточно средств')
+
+        self.data.update_money(delta=-cost, ctx=ctx)
+        await author.add_roles(role)
+
         await EmbedUtils.show_embed(
             ctx=ctx,
-            colour=colour,
-            description=description,
-            action_type=ActionType.EXECUTED
+            description=f'Вы приобрели роль ``@{role}``',
+            colour=EmbedColor.SUCCESS,
+            action_type=ActionType.EXECUTED,
         )
 
     @buy.error
@@ -69,15 +73,9 @@ class MarketCommands(commands.Cog):
                         ctx: Context,
                         error: Exception
                         ):
-        print(error.args)
-        await EmbedUtils.show_embed(
+        await ErrorUtils.process_error(
             ctx=ctx,
-            title='Не удалось купить роль',
-            colour=EmbedColor.ERROR,
-            description=f'Укажите числом номмер роли из маркета, которую хотите купить.',
-            action_type=ActionType.ASKED
+            error=error,
+            title_prefix='Не удалось купить роль',
+            description=f'Укажите порядковый номер роли в списке из команды !market',
         )
-
-
-
-
