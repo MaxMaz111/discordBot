@@ -1,14 +1,13 @@
 from typing import Set, List
 
-import discord
 from discord import Member
+from discord.ext import commands
 from discord.ext.commands import Context
 
-from data.bot_data import BotData
-from discord.ext import commands
 import bot_commands.CommandUtils as CommandUtils
 from bot_commands import EmbedUtils
 from bot_commands.EmbedUtils import EmbedColor, ActionType
+from data.bot_data import BotData
 from utils import ErrorUtils
 
 
