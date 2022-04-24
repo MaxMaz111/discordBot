@@ -5,9 +5,11 @@ from discord.ext.commands import Bot
 
 
 class GuildData:
-    def __init__(self, bot: Bot, guild_id: int):
+    def __init__(self, bot: Bot, guild_id: int, roles: List[int]):
         self.bot = bot
         self.guild_id = guild_id
+        self.roles = roles
+        self.role_price = 50
 
         self.guild = None
         self.members = None
