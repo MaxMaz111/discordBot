@@ -7,33 +7,31 @@ from data.bot_data import BotData
 
 
 class MarketCommands(commands.Cog):
-    def __init__(self, bot_data: BotData):
+    def __init__(self,
+                 bot_data: BotData):
         self.data = bot_data
-        self.roles_id = None
-        self.role_price = None
-
-    def get_roles_id(self, ctx):
-        if self.roles_id is None:
-            self.roles_id = self.data.guild_id_to_data[ctx.guild.id].roles
-        return self.roles_id
-
-    def get_role_price(self, ctx):
-        if self.role_price is None:
-            self.role_price = self.data.guild_id_to_data[ctx.guild.id].role_price
-        return self.role_price
 
     @commands.command()
-    async def market(self, ctx):
-        self.roles_id = self.get_roles_id(ctx)
-        roles_to_str = ''
-        for i in range(len(self.roles_id)):
-            role = ctx.guild.get_role(role_id=self.roles_id[i])
-            roles_to_str += f'{i+1} - ``@{role}``\n'
+    async def market(self,
+                     ctx: Context):
+        role_to_cost = self.data.get_market_role_to_cost(ctx=ctx)
 
-        embed_description = f'{roles_to_str}'
-        embed = EmbedUtils.create_command_embed(ctx=ctx, colour=EmbedColor.ALL_OK, description=embed_description,
-                                                title=' Роли доступные для покупки', action_type=ActionType.ASKED)
-        await EmbedUtils.show_embed(ctx=ctx, embed=embed)
+        def role_to_str(index_role_cost):
+            index, role_cost = index_role_cost
+            role, cost = role_cost
+            return f'{index + 1} - ``@{role}``: {cost} :coin:'
+
+        roles_str = '\n'.join(
+            map(role_to_str, enumerate(role_to_cost.items()))
+        )
+
+        await EmbedUtils.show_embed(
+            ctx=ctx,
+            title='Роли доступные для покупки',
+            description=roles_str,
+            colour=EmbedColor.ALL_OK,
+            action_type=ActionType.ASKED
+        )
 
     @commands.command()
     async def buy(self, ctx, n: int):

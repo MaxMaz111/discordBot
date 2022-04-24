@@ -1,6 +1,6 @@
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Dict
 
-from discord import Member
+from discord import Member, Role
 from discord.ext.commands import Context
 
 from data.db_data import DbData
@@ -108,3 +108,8 @@ class BotData:
             recipient_money=recipient_money,
             amount=amount,
         )
+
+    def get_market_role_to_cost(self,
+                                ctx: Context
+                                ) -> Dict[Role, int]:
+        return self.get_guild_data(ctx=ctx).get_market_role_to_cost()

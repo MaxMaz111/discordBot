@@ -26,8 +26,16 @@ intents.members = True
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 guild_id = 481470012192980993
 
+role_cost = 50
 guilds = [
-    GuildData(bot=bot, guild_id=guild_id, roles=[967438691809235044, 967439014695157780])
+    GuildData(
+        bot=bot,
+        guild_id=guild_id,
+        market_role_id_to_cost={
+            967438691809235044: role_cost,
+            967439014695157780: role_cost,
+        }
+    )
 ]
 
 db_directory = 'db'

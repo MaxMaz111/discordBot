@@ -1,18 +1,24 @@
-from typing import Optional, List
+from typing import Optional, List, Dict
 
-from discord import Member, Guild
+from discord import Member, Guild, Role
 from discord.ext.commands import Bot
 
 
 class GuildData:
-    def __init__(self, bot: Bot, guild_id: int, roles: List[int]):
+    def __init__(self,
+                 bot: Bot,
+                 guild_id: int,
+                 market_role_id_to_cost: Dict[int, int]
+                 ):
         self.bot = bot
-        self.guild_id = guild_id
-        self.roles = roles
-        self.role_price = 50
 
+        self.guild_id = guild_id
         self.guild = None
+
         self.members = None
+
+        self.market_role_id_to_cost = market_role_id_to_cost
+        self.market_role_to_cost = None
 
     def get_guild(self) -> Guild:
         if self.guild is None:
@@ -30,4 +36,11 @@ class GuildData:
         member = list(filter(lambda x: x.id == discord_id, members))
         return member[0] if len(member) > 0 else None
 
+    def get_market_role_to_cost(self) -> Dict[Role, int]:
+        if self.market_role_to_cost is None:
+            self.market_role_to_cost = {}
+            for role_id, cost in self.market_role_id_to_cost.items():
+                role = self.get_guild().get_role(role_id=role_id)
+                self.market_role_to_cost[role] = cost
 
+        return self.market_role_to_cost
