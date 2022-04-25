@@ -47,8 +47,12 @@ class TimeCommands(commands.Cog):
                 if zone_str is None:
                     return datetime.now()
 
-                if zone_str.isnumeric():
-                    zone_str = f'GMT+{zone_str}'
+                try:
+                    zone_int = int(zone_str)
+                    zone_sign = '-' if zone_int < 0 else '+'
+                    zone_str = f'GMT{zone_sign}{abs(zone_int)}'
+                except ValueError as e:
+                    pass
 
                 zone_str = TimeCommands.fix_gmt(zone_str)
 
