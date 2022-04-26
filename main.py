@@ -3,7 +3,6 @@ import os
 import discord
 from discord.ext import commands
 from discord.ext.commands import Context
-from discord_components import DiscordComponents
 from dotenv import load_dotenv
 
 from bot_commands.BalanceCommands import BalanceCommands
@@ -53,7 +52,19 @@ load_dotenv()
 
 @bot.event
 async def on_ready():
-    DiscordComponents(bot)
+    bot_guild_ids = [
+        guild.guild_id for guild in guilds
+    ]
+
+    for guild in bot.guilds:
+        if guild.id not in bot_guild_ids:
+            bot_data.add_guild(
+                GuildData(
+                    bot=bot,
+                    guild_id=guild.id,
+                )
+            )
+
     LogUtils.get_bot_logger().info(msg='We have logged in as {0.user}'.format(bot))
 
 

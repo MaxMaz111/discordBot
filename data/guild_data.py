@@ -8,7 +8,7 @@ class GuildData:
     def __init__(self,
                  bot: Bot,
                  guild_id: int,
-                 market_role_id_to_cost: Dict[int, int]
+                 market_role_id_to_cost: Optional[Dict[int, int]] = None,
                  ):
         self.bot = bot
 
@@ -17,7 +17,7 @@ class GuildData:
 
         self.members = None
 
-        self.market_role_id_to_cost = market_role_id_to_cost
+        self.market_role_id_to_cost = market_role_id_to_cost or dict()
         self.market_role_costs = None
 
     def get_guild(self) -> Guild:

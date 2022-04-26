@@ -14,9 +14,16 @@ class BotData:
                  db: DbData,
                  ):
         self.guild_id_to_data = {}
+
         for guild in guilds:
-            self.guild_id_to_data[guild.guild_id] = guild
+            self.add_guild(guild)
+
         self.db = db
+
+    def add_guild(self,
+                  guild: GuildData
+                  ):
+        self.guild_id_to_data[guild.guild_id] = guild
 
     @staticmethod
     def get_guild_id(guild_id: int = None,
