@@ -33,6 +33,7 @@ class RuLocalization:
     def statistic_type_to_readable(statistic_type: StatisticType) -> str:
         return {
             StatisticType.BOT_COMMANDS_AMOUNT: 'Количество запросов к боту',
+            StatisticType.SEEN_FOXES_AMOUNT: 'Количество увиденных лисичек',
         }[statistic_type]
 
 
