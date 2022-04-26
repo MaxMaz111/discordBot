@@ -15,8 +15,6 @@ class GuildData:
         self.guild_id = guild_id
         self.guild = None
 
-        self.members = None
-
         self.market_role_id_to_cost = market_role_id_to_cost or dict()
         self.market_role_costs = None
 
@@ -26,10 +24,7 @@ class GuildData:
         return self.guild
 
     def get_members(self) -> List[Member]:
-        if self.members is None:
-            members = self.get_guild().members
-            self.members = list(filter(lambda x: not x.bot, members))
-        return self.members
+        return list(filter(lambda x: not x.bot, self.get_guild().members))
 
     def get_member(self, discord_id: int) -> Optional[Member]:
         members = self.get_members()

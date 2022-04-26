@@ -51,9 +51,10 @@ class DbData:
 
     def top_users_by_money(self, guild_id: int, member_ids: typing.Set[int], limit: int) -> List[Tuple[int, int]]:
         return self.db_sess.query(Users.discord_id, Money.balance) \
-            .filter(Users.guild_id == guild_id) \
-            .filter(Users.discord_id in member_ids) \
-            .join(Money) \
+            .filter(
+                Users.guild_id == guild_id,
+                Users.discord_id.in_(member_ids)
+            ).join(Money) \
             .order_by(Money.balance.desc()) \
             .limit(limit) \
             .all()
@@ -104,9 +105,10 @@ class DbData:
             statistic = self.get_statistic(statistic_type)
 
         user_statistic = self.db_sess.query(UserStatistics) \
-            .filter(UserStatistics.user_id == user.id) \
-            .filter(UserStatistics.statistic_id == statistic.id) \
-            .first()
+            .filter(
+                UserStatistics.user_id == user.id,
+                UserStatistics.statistic_id == statistic.id
+            ).first()
 
         if not user_statistic:
             user_statistic = self.init_user_statistic(user, statistic)
