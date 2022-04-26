@@ -89,9 +89,9 @@ class BalanceCommands(commands.Cog):
                                     )
 
     @commands.command()
-    async def top_balances(self,
-                           ctx: Context,
-                           ):
+    async def top(self,
+                  ctx: Context,
+                  ):
         top_id_balances = self.bot_data.top_users_by_money(ctx=ctx, limit=self.top_limit)
 
         guild_members = self.bot_data.get_members(ctx=ctx)
