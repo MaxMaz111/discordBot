@@ -28,7 +28,7 @@ class TimeCommands(commands.Cog):
     @staticmethod
     def fix_gmt(zone_str: str):
         pattern = "GMT[\\+\\-][0-9]+"
-        if re.match(pattern, zone_str):
+        if re.match(pattern, zone_str.upper()):
             signs = ["+", "-"]
             for i, sign in enumerate(signs):
                 if sign in zone_str:
