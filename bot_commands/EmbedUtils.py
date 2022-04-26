@@ -6,7 +6,7 @@ from discord.embeds import EmptyEmbed, Embed
 from discord.ext.commands import Context
 
 import bot_commands.CommandUtils as CommandUtils
-from localization.RuLocalization import RuLocalization
+from data.models import StatisticType
 
 
 class EmbedColor(Enum):
@@ -19,6 +19,21 @@ class EmbedColor(Enum):
 class ActionType(Enum):
     ASKED = 'asked'
     EXECUTED = 'executed'
+
+
+class RuLocalization:
+    @staticmethod
+    def action_type_to_verb(action_type: ActionType) -> str:
+        return {
+            ActionType.ASKED: 'Запросил(а)',
+            ActionType.EXECUTED: 'Выполнил(а)',
+        }[action_type]
+
+    @staticmethod
+    def statistic_type_to_readable(statistic_type: StatisticType) -> str:
+        return {
+            StatisticType.BOT_COMMANDS_AMOUNT: 'Количество запросов к боту',
+        }[statistic_type]
 
 
 def create_command_embed(ctx: Context = None,
