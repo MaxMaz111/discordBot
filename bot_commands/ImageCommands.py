@@ -6,6 +6,7 @@ from discord.ext import commands
 from discord.ext.commands import Context
 
 from data.bot_data import BotData
+from data.models import StatisticType
 
 
 class ImageCommands(commands.Cog):
@@ -23,4 +24,9 @@ class ImageCommands(commands.Cog):
 
     @commands.command()
     async def fox(self, ctx: Context):
+        self.bot_data.update_user_statistic(
+            statistic_type=StatisticType.SEEN_FOXES_AMOUNT,
+            delta=1,
+            ctx=ctx,
+        )
         await ctx.send(f'https://randomfox.ca/images/{random.randint(1, 121)}.jpg')

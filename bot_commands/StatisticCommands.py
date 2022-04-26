@@ -27,10 +27,11 @@ class StatisticCommands(commands.Cog):
         ]
 
         ans = [f'{statistic_readable} - {value}' for statistic_readable, value in statistics_readable]
+        description = '\n'.join(ans) if len(ans) > 0 else 'Ни одной статистики не собрано'
 
         await EmbedUtils.show_embed(ctx=ctx,
                                     colour=EmbedColor.ALL_OK,
                                     title='Статиститика пользователя',
-                                    description='\n'.join(ans),
+                                    description=description,
                                     action_type=ActionType.ASKED,
                                     )
