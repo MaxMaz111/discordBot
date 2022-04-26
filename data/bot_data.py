@@ -132,3 +132,16 @@ class BotData:
             delta=delta,
             new_value=new_value,
         )
+
+    def get_all_user_statistics(self,
+                                discord_id: int = None,
+                                ctx: Context = None,
+                                ) -> List[Tuple[int, str]]:
+        user = self.get_user(
+            ctx=ctx,
+            discord_id=discord_id,
+        )
+
+        return self.db.get_all_user_statistics(
+            user=user
+        )
