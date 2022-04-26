@@ -11,6 +11,7 @@ from bot_commands.DailyRewardCommands import DailyRewardCommands
 from bot_commands.ImageCommands import ImageCommands
 from bot_commands.MarketCommands import MarketCommands
 from bot_commands.MembersCommands import MemberCommands
+from bot_commands.StatisticCommands import StatisticCommands
 from bot_commands.TimeCommands import TimeCommands
 from data.bot_data import BotData
 from data.db_data import DbData
@@ -74,5 +75,5 @@ bot.add_cog(ImageCommands(data=bot_data))
 bot.add_cog(MarketCommands(bot_data=bot_data))
 bot.add_cog(BalanceCommands(data=bot_data, top_limit=top_balances_limit))
 bot.add_cog(MemberCommands(data=bot_data))
-# bot.add_cog(StatisticCommands(data=bot_data))
+bot.add_cog(StatisticCommands(data=bot_data))
 bot.run(os.getenv('TOKEN'))
