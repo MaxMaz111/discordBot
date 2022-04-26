@@ -5,7 +5,7 @@ from discord.ext.commands import Context
 
 from data.db_data import DbData
 from data.guild_data import GuildData
-from data.models import Users, Money
+from data.models import Users, Money, StatisticType
 
 
 class BotData:
@@ -113,3 +113,22 @@ class BotData:
                               ctx: Context
                               ) -> List[Tuple[Role, int]]:
         return self.get_guild_data(ctx=ctx).get_market_role_costs()
+
+    def update_user_statistic(self,
+                              statistic_type: StatisticType,
+                              delta: int = None,
+                              new_value: int = None,
+                              discord_id: int = None,
+                              ctx: Context = None,
+                              ):
+        user = self.get_user(
+            ctx=ctx,
+            discord_id=discord_id,
+        )
+
+        self.db.update_user_statistic(
+            user=user,
+            statistic_type=statistic_type,
+            delta=delta,
+            new_value=new_value,
+        )

@@ -8,9 +8,9 @@ class StatisticCommands(commands.Cog):
     def __init__(self,
                  data: BotData,
                  ):
-        self.bot_data = data
+        self.data = data
 
-    @commands.command
+    @commands.command()
     async def stats(self,
                     ctx: Context,
                     ):
