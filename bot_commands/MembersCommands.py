@@ -59,11 +59,7 @@ class MemberCommands(commands.Cog):
                       ctx: Context,
                       discord_id: str = None,
                       ):
-        if discord_id is None:
-            author = CommandUtils.get_author(ctx)
-            discord_id = int(author.id)
-        else:
-            discord_id = CommandUtils.get_mentioned_id(ctx=ctx, mentioned_id_argument=discord_id)
+        discord_id = CommandUtils.get_target_id(ctx=ctx, mentioned_id_argument=discord_id)
 
         user = self.data.get_member(discord_id=discord_id, ctx=ctx)
         if not user:

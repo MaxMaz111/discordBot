@@ -27,7 +27,7 @@ class BalanceCommands(commands.Cog):
         sender = CommandUtils.get_author(ctx)
         sender_id = int(sender.id)
 
-        recipient_id = CommandUtils.get_mentioned_id(ctx=ctx, mentioned_id_argument=recipient_id)
+        recipient_id = CommandUtils.get_target_id(ctx=ctx, mentioned_id_argument=recipient_id)
 
         members = self.bot_data.get_members(ctx=ctx)
         member_ids = MemberCommands.to_ids(members)
@@ -74,11 +74,8 @@ class BalanceCommands(commands.Cog):
                       ctx: Context,
                       discord_id: str = None,
                       ):
-        if discord_id is None:
-            author = CommandUtils.get_author(ctx)
-            discord_id = int(author.id)
-        else:
-            discord_id = CommandUtils.get_mentioned_id(ctx=ctx, mentioned_id_argument=discord_id)
+        discord_id = CommandUtils.get_target_id(ctx=ctx, mentioned_id_argument=discord_id)
+
         money = self.bot_data.get_money(discord_id=discord_id, ctx=ctx)
         money_amount = money.balance
         owner_str = f'вашем балансе' if discord_id == CommandUtils.get_author(ctx=ctx).id else f'балансе <@{discord_id}>'

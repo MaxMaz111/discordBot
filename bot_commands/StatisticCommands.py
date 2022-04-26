@@ -1,7 +1,7 @@
 from discord.ext import commands
 from discord.ext.commands import Context
 
-from bot_commands import EmbedUtils
+from bot_commands import EmbedUtils, CommandUtils
 from bot_commands.EmbedUtils import EmbedColor, ActionType, RuLocalization
 from data.bot_data import BotData
 from data.models import StatisticType
@@ -16,9 +16,12 @@ class StatisticCommands(commands.Cog):
     @commands.command()
     async def stats(self,
                     ctx: Context,
+                    discord_id: str = None,
                     ):
+        discord_id = CommandUtils.get_target_id(ctx=ctx, mentioned_id_argument=discord_id)
+
         statistic_values = self.data.get_all_user_statistics(
-            ctx=ctx
+            ctx=ctx, discord_id=discord_id
         )
 
         statistics_readable = [
