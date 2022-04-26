@@ -43,6 +43,8 @@ class MarketCommands(commands.Cog):
 
         role_costs = self.data.get_market_role_costs(ctx=ctx)
         roles_count = len(role_costs)
+        if roles_count == 0:
+            raise BotException(message=f'Магазин пуст, попросите администратора добавить роли')
 
         if role_index not in range(roles_count):
             raise BotException(message=f'Ожидается номер роли от 1 до {roles_count}, но получен {role_index + 1}')

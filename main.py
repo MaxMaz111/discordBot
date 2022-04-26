@@ -21,8 +21,6 @@ from utils import LogUtils
 LogUtils.init_logger('discord')
 LogUtils.init_logger(LogUtils.BOT_LOGGER_NAME)
 
-intents = discord.Intents.default()
-intents.members = True
 
 bot = commands.Bot(command_prefix='!', intents=discord.Intents.all())
 guild_id = 481470012192980993
