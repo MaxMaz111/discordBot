@@ -1,3 +1,5 @@
+import random
+
 import requests
 from bs4 import BeautifulSoup as bs
 from discord.ext import commands
@@ -18,3 +20,7 @@ class ImageCommands(commands.Cog):
         cats = soup.find_all('div', class_='post')
         link = 'https://imgur.com' + cats[0].find('a')['href']
         await ctx.send(link)
+
+    @commands.command()
+    async def fox(self, ctx: Context):
+        await ctx.send(f'https://randomfox.ca/images/{random.randint(1, 121)}.jpg')
