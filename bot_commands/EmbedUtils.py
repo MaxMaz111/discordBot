@@ -1,4 +1,4 @@
-from enum import Enum, auto
+from enum import Enum
 
 import discord
 from discord import Member
@@ -6,6 +6,7 @@ from discord.embeds import EmptyEmbed, Embed
 from discord.ext.commands import Context
 
 import bot_commands.CommandUtils as CommandUtils
+from data.models import StatisticType
 
 
 class EmbedColor(Enum):
@@ -21,10 +22,18 @@ class ActionType(Enum):
 
 
 class RuLocalization:
-    action_type_to_verb = {
-        ActionType.ASKED: 'Запросил(а)',
-        ActionType.EXECUTED: 'Выполнил(а)'
-    }
+    @staticmethod
+    def action_type_to_verb(action_type: ActionType) -> str:
+        return {
+            ActionType.ASKED: 'Запросил(а)',
+            ActionType.EXECUTED: 'Выполнил(а)',
+        }[action_type]
+
+    @staticmethod
+    def statistic_type_to_readable(statistic_type: StatisticType) -> str:
+        return {
+            StatisticType.BOT_COMMANDS_AMOUNT: 'Количество запросов к боту',
+        }[statistic_type]
 
 
 def create_command_embed(ctx: Context = None,
@@ -39,7 +48,7 @@ def create_command_embed(ctx: Context = None,
 
     embed = discord.Embed(colour=colour.value, description=description, title=title)
 
-    action_verb = RuLocalization.action_type_to_verb[action_type]
+    action_verb = RuLocalization.action_type_to_verb(action_type)
     embed.set_footer(text=f'{action_verb} {CommandUtils.to_nickname(author)}', icon_url=author.avatar_url, )
 
     return embed

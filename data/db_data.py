@@ -125,3 +125,11 @@ class DbData:
         user_statistic.value = new_value
 
         self.db_sess.commit()
+
+    def get_all_user_statistics(self,
+                                user: Users
+                                ) -> List[Tuple[int, str]]:
+        return self.db_sess.query(UserStatistics.value, Statistics.name)\
+            .filter(UserStatistics.user_id == user.id)\
+            .join(Statistics)\
+            .all()
