@@ -8,6 +8,7 @@ from data.db_session import SqlAlchemyBase
 
 class StatisticType(Enum):
     BOT_COMMANDS_AMOUNT = 'bot_commands_amount'
+    SEEN_FOXES_AMOUNT = 'seen_foxes_amount'
 
 
 class Statistics(SqlAlchemyBase):
