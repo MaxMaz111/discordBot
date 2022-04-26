@@ -2,19 +2,20 @@ import os
 
 import discord
 from discord.ext import commands
+from discord.ext.commands import Context
+from discord_components import DiscordComponents
 from dotenv import load_dotenv
 
 from bot_commands.BalanceCommands import BalanceCommands
 from bot_commands.DailyRewardCommands import DailyRewardCommands
 from bot_commands.ImageCommands import ImageCommands
+from bot_commands.MarketCommands import MarketCommands
 from bot_commands.MembersCommands import MemberCommands
 from bot_commands.TimeCommands import TimeCommands
-from bot_commands.MarketCommands import MarketCommands
 from data.bot_data import BotData
 from data.db_data import DbData
 from data.guild_data import GuildData
-from discord_components import DiscordComponents
-
+from data.models import StatisticType
 from utils import LogUtils
 
 LogUtils.init_logger('discord')
@@ -54,6 +55,16 @@ async def on_ready():
     DiscordComponents(bot)
     LogUtils.get_bot_logger().info(msg='We have logged in as {0.user}'.format(bot))
 
+
+@bot.event
+async def on_command(ctx: Context):
+    bot_data.update_user_statistic(
+        ctx=ctx,
+        statistic_type=StatisticType.BOT_COMMANDS_AMOUNT,
+        delta=1,
+    )
+
+
 daily_reward = 20
 top_balances_limit = 10
 
@@ -63,4 +74,5 @@ bot.add_cog(ImageCommands(data=bot_data))
 bot.add_cog(MarketCommands(bot_data=bot_data))
 bot.add_cog(BalanceCommands(data=bot_data, top_limit=top_balances_limit))
 bot.add_cog(MemberCommands(data=bot_data))
+# bot.add_cog(StatisticCommands(data=bot_data))
 bot.run(os.getenv('TOKEN'))
