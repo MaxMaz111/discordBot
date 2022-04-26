@@ -1,13 +1,15 @@
 import re
 from datetime import datetime
-from typing import Tuple, Optional
+from typing import Optional
 
 import pytz
 from discord.ext import commands
 from discord.ext.commands import Context
 
 from bot_commands import EmbedUtils
+from bot_commands.BotException import BotException
 from bot_commands.EmbedUtils import EmbedColor, ActionType
+from utils import ErrorUtils
 
 
 class TimeCommands(commands.Cog):
@@ -28,7 +30,7 @@ class TimeCommands(commands.Cog):
     @staticmethod
     def fix_gmt(zone_str: str):
         pattern = "GMT[\\+\\-][0-9]+"
-        if re.match(pattern, zone_str):
+        if re.match(pattern, zone_str.upper()):
             signs = ["+", "-"]
             for i, sign in enumerate(signs):
                 if sign in zone_str:
@@ -42,38 +44,43 @@ class TimeCommands(commands.Cog):
                    ctx: Context,
                    city_or_timezone_or_gmt: str = None,
                    ):
-        def try_calculate(zone_argument) -> Tuple[str, EmbedColor]:
-            def get_date(zone_str) -> Optional[datetime]:
-                if zone_str is None:
-                    return datetime.now()
 
-                try:
-                    zone_int = int(zone_str)
-                    zone_sign = '-' if zone_int < 0 else '+'
-                    zone_str = f'GMT{zone_sign}{abs(zone_int)}'
-                except ValueError as e:
-                    pass
+        def calculate_date(zone_str: Optional[str]) -> datetime:
+            if zone_str is None:
+                return datetime.now()
 
-                zone_str = TimeCommands.fix_gmt(zone_str)
+            try:
+                zone_int = int(zone_str)
+                zone_sign = '-' if zone_int < 0 else '+'
+                zone_str = f'GMT{zone_sign}{abs(zone_int)}'
+            except ValueError:
+                pass
 
-                zone = TimeCommands.find_timezone(zone_str)
-                if zone is None:
-                    return None
+            zone_str = TimeCommands.fix_gmt(zone_str)
 
-                return datetime.now(zone)
+            zone = TimeCommands.find_timezone(zone_str)
+            if zone is None:
+                raise BotException(message=f'Не найдено соответствие для {zone_str}')
 
-            date = get_date(zone_argument)
-            if date is None:
-                return 'Такого места или часового пояса нет в наших списках. ' \
-                       'Введите город или часовой пояс, например Moscow, GMT+1 или 1', \
-                       EmbedColor.ERROR
+            return datetime.now(zone)
 
-            return TimeCommands.format_date(date), EmbedColor.SUCCESS
-
-        title, color = try_calculate(zone_argument=city_or_timezone_or_gmt)
+        date = calculate_date(zone_str=city_or_timezone_or_gmt)
+        date_str = TimeCommands.format_date(date)
         await EmbedUtils.show_embed(
             ctx=ctx,
-            title=title,
-            colour=color,
+            title=date_str,
+            colour=EmbedColor.SUCCESS,
             action_type=ActionType.ASKED,
+        )
+
+    @time.error
+    async def time_error(self,
+                         ctx: Context,
+                         error: Exception
+                         ):
+        await ErrorUtils.process_error(
+            ctx=ctx,
+            error=error,
+            title_prefix='Ошибка вычисления времени',
+            description='Введите город или часовой пояс (относительно GMT), например Moscow, GMT+3 или 3',
         )
