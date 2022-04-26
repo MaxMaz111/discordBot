@@ -46,7 +46,6 @@ db_name = f'{db_directory}/accounts.db'
 db = DbData(db_name=db_name)
 
 bot_data = BotData(guilds=guilds, db=db)
-print(bot_data)
 load_dotenv()
 
 
