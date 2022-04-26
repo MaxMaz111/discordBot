@@ -106,8 +106,6 @@ class BalanceCommands(commands.Cog):
             result_str = f'{nickname} - {balance} :coin:'
             ans.append(result_str)
 
-        msg = 'Топ пользователей сервера по балансу:\n'
-        msg += '\n'.join(ans)
         await EmbedUtils.show_embed(ctx=ctx,
                                     colour=EmbedColor.ALL_OK,
                                     title='Топ пользователей сервера по балансу',
