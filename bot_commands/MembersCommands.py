@@ -6,6 +6,7 @@ from discord.ext.commands import Context
 
 import bot_commands.CommandUtils as CommandUtils
 from bot_commands import EmbedUtils
+from bot_commands.BotException import BotException
 from bot_commands.EmbedUtils import EmbedColor, ActionType
 from data.bot_data import BotData
 from utils import ErrorUtils
@@ -63,19 +64,15 @@ class MemberCommands(commands.Cog):
 
         user = self.data.get_member(discord_id=discord_id, ctx=ctx)
         if not user:
-            await EmbedUtils.show_embed(ctx=ctx,
-                                        colour=EmbedColor.ERROR,
-                                        title='Пользователя с таким ID или никнеймом нет на сервере',
-                                        action_type=ActionType.ASKED,
-                                        )
-            return
+            raise BotException(f'Пользователь <@{discord_id}> не найден на сервере')
 
         date_format = "%d.%m.%y"
         user_nick = CommandUtils.to_nickname(user)
         joined_at = user.joined_at.strftime(date_format)
         created_at = user.created_at.strftime(date_format)
         user_roles = filter(lambda x: x.name != '@everyone', user.roles)
-        user_name_roles = list(map(lambda x: f'`{x.name}`', user_roles))
+        user_role_names = list(map(lambda x: f'`{x.name}`', user_roles))
+        user_role_names_list = ",".join(user_role_names) if user_role_names else 'Роли отсутствуют'
         user_img_url = user.avatar_url
 
         embed = EmbedUtils.create_command_embed(
@@ -89,7 +86,7 @@ class MemberCommands(commands.Cog):
             .add_field(name='ID пользователя', value=user.id, inline=True) \
             .add_field(name='Присоединился к серверу', value=joined_at, inline=True) \
             .add_field(name='Аккаунт создан', value=created_at) \
-            .add_field(name=f'Роли({len(user_name_roles)})', value=",".join(user_name_roles), inline=True) \
+            .add_field(name=f'Роли({len(user_role_names)})', value=user_role_names_list, inline=True) \
 
         await EmbedUtils.show_embed(ctx=ctx, embed=embed)
 
@@ -102,6 +99,5 @@ class MemberCommands(commands.Cog):
             ctx=ctx,
             error=error,
             title_prefix='Не удалось обработать запрос',
-            with_details=False,
             description='При запросе профиля другого пользователя укажите его id или линк',
         )
