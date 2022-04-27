@@ -16,7 +16,7 @@ class DailyRewardCommands(commands.Cog):
         self.daily_reward = daily_reward
 
     @commands.command()
-    @commands.cooldown(1, 60 * 60 * 24, commands.BucketType.guild)
+    @commands.cooldown(1, 60 * 60 * 24, commands.BucketType.member)
     async def reward(self,
                      ctx: Context,
                      ):
@@ -38,5 +38,4 @@ class DailyRewardCommands(commands.Cog):
             ctx=ctx,
             error=error,
             title_prefix='Вы уже получали свою награду, приходите позже.',
-            with_details=False,
         )
